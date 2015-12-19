@@ -18,6 +18,9 @@ Instant messaging system using Node.js and MongoDB
 **body-parser** -- Once npm is installed, use
     npm install body-parser
     
-
+**socket.io** -- Once npm is installed, use
+    npm install socket.io
+    
 ## Installation
 =========================
+//TODO
