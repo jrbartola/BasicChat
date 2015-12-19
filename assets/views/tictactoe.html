@@ -1,0 +1,126 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="Tic Tac Toe Javascript game" />
+    <meta name="author" content="Jesse Bartola" />
+    <title>Tic Tac Toe</title>
+    <style type="text/css">
+        body {background-color: #b388ff;}
+        .gametile {background-color: #6a1b9a; height: 148.917px; text-align: center; 
+            line-height:230%; }
+        .hoverable {border-radius: 10px;}
+        
+    </style>
+    <script src="/js/jquery-1.11.1.js"></script>
+    <script type="text/javascript" src="/js/materialize.min.js"></script>
+    <script type="text/javascript" src="/js/materialize.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="/css/materialize.min.css"  media="screen,projection"/>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.12.0/react.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.12.0/JSXTransformer.js"></script>
+</head>
+<script type="text/javascript">
+$(document).ready(function() {
+    $(".fa").hide();
+
+    $(".gametile").on("click", function() {
+        console.log("gotcha nose");
+        if ($(this).children().is(":visible")) {
+            $(this).children().hide();
+        } else {
+            $(this).children().show();
+        }
+        
+    });
+});
+
+</script>
+
+<script type="text/jsx">
+
+var whosTurn;
+
+/*** @jsx React.DOM */
+var TicTac = React.createClass({
+    render: function() {
+        return (
+        <div className="row">
+        <div id="gameContainer" className="col s6 push-s3">
+            <br/>
+            <div className="row">
+                <div id="tile0" className="col s4 hoverable">
+                    <h1 className="z-depth-4 gametile"><i className="fa fa-times fa-2"></i></h1>
+                </div>
+                <div id="tile1" className="col s4 hoverable">
+                    <h1 className="z-depth-4 gametile"><i className="fa fa-times fa-2"></i></h1>
+                </div>
+                <div id="tile2" className="col s4 hoverable">
+                    <h1 className="z-depth-4 gametile"><i className="fa fa-times fa-2"></i></h1>
+                </div>
+            </div>
+            <div className="row">
+                <div id="tile3" className="col s4 hoverable">
+                    <h1 className="z-depth-4 gametile"><i className="fa fa-times fa-2"></i></h1>
+                </div>
+                <div id="tile4" className="col s4 hoverable">
+                    <h1 className="z-depth-4 gametile"><i className="fa fa-times fa-2"></i></h1>
+                </div>
+                <div id="tile5" className="col s4 hoverable">
+                    <h1 className="z-depth-4 gametile"><i className="fa fa-times fa-2"></i></h1>
+                </div>
+            </div>
+            <div className="row">
+                <div id="tile6" className="col s4 hoverable">
+                    <h1 className="z-depth-4 gametile"><i className="fa fa-times fa-2"></i></h1>
+                </div>
+                <div id="tile7" className="col s4 hoverable">
+                    <h1 className="z-depth-4 gametile"><i className="fa fa-times fa-2"></i></h1>
+                </div>
+                <div id="tile8" className="col s4 hoverable">
+                    <h1 className="z-depth-4 gametile"><i className="fa fa-times fa-2"></i></h1>
+                </div>
+            </div>
+        </div>
+        </div>
+        )
+    }
+
+});
+
+
+
+
+React.render(
+    <TicTac />,
+    document.getElementsByClassName("container")[0]
+);
+
+</script>
+
+<body>
+
+<nav class="purple darken-3">
+  <div class="nav-wrapper">
+    <a href="#" class="brand-logo center">Tic Tac Toe</a>
+    <ul id="nav-mobile" class="left hide-on-med-and-down">
+      <li><a href="#"><i class="material-icons left">store</i>Home</a></li>
+      <li><a href="/chat">Chat</a></li>
+      <li><a id="profile" href="#">Profile</a></li>
+      </ul>
+    <ul class="right hide-on-med-and-down">
+      <li><a id="logout" href="/logout">Log out</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+<!-- React stuff goes in here -->
+</div>
+
+
+</body>
+
+<html>

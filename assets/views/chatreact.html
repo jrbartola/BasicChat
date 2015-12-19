@@ -1,0 +1,257 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <!--[if IE]>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <![endif]-->
+    <title>Basic Chat</title>
+    <!-- BOOTSTRAP CORE STYLE CSS -->
+    <link href="/css/bootstrap.css" rel="stylesheet" />
+    <!-- FONT AWESOME  CSS -->
+    <link href="/css/font-awesome.css" rel="stylesheet" />
+    <!-- CUSTOM STYLE CSS -->
+    <link href="/css/style.css" rel="stylesheet" />
+</head>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/jquery-1.11.1.js"></script>
+<script src="//www.parsecdn.com/js/parse-1.6.7.min.js"></script>
+    <!-- CORE BOOTSTRAP SCRIPTS  FILE -->
+<script src="/js/bootstrap.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.12.0/react.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.12.0/JSXTransformer.js"></script>
+<script src="/js/tabs.js" type="text/javascript"></script>
+</script>
+<script>
+Parse.initialize("EofbpfgreHsypOKPaXjafIuZMsYZ0hPZnSoYLnI9", "by6N3GBA6rlvjtiO2SFo2VlF4EafkNxOXYERhK1m");
+var currentUser = Parse.User.current();
+if (currentUser == undefined) {
+    window.location.href = "/";
+}
+
+$(document).ready(function() {
+    var chatsocket = io();
+    chatsocket.emit('returnUser', currentUser.attributes.username);
+
+    $("#logOut").on("click", function() {
+        // log out user and save field as such
+        Parse.User.current().set("loggedIn", false);
+        Parse.User.current().save(null, {
+            success: function(user) {
+                console.log("Logged out");
+                Parse.User.logOut();
+                window.location.href = "/";
+            }
+        });
+        
+    });
+
+  $('form#send').on("submit", function(){
+    chatsocket.emit('chat message', {"message": $('#msg').val(), 
+                                    "username" : currentUser.attributes.username});
+    $('#msg').val('');
+    return false;
+  });
+  chatsocket.on("newUser", function(onliners) {
+    
+    $("#online").empty();
+    
+    for (u in onliners) {
+        var onlineStyle = "";
+        if (onliners[u] == currentUser.attributes.username) {
+            onlineStyle = "background-color:gray";
+        }
+        
+        if ($("#" + onliners[u]).length == 0) {
+            //console.log("Number is " + onliners[u] + " chests");
+            $("#online").append($("<div class='chat-box-online-right' style='" + onlineStyle + "' id='" 
+        + u + "'><br /></div>").text(onliners[u]).append($("<hr class='hr-clas-low' />")));
+        }
+
+    }
+    
+  });
+  
+  chatsocket.on("chat message", function(msg) {
+    if (msg[1] != currentUser.attributes.username) {
+        $("#messages").append($("<div class='chat-box-left'></div><br />").text(msg[0]));
+    } else {
+        $("#messages").append($("<div class='chat-box-right'></div><br />").text(msg[0]));
+    }
+    
+  });
+  chatsocket.on("disconnect", function(userId) {
+    $("#"+userId).remove();
+  });
+
+  chatsocket.on("userLeft", function(userId) {
+
+  });
+
+});
+</script>
+<script type="text/jsx">
+
+var nolist = {
+	listStyleType: 'none'
+}
+
+/*** @jsx React.DOM */
+var ChatApp = React.createClass({
+
+	getInitialState: function() {
+		return {msgs: [],
+				convos: [],
+				onliners: []
+			};
+	},
+
+	componentDidMount: function() {
+		var that = this;
+		this.socket = io();
+		this.socket.on("messages", function)
+	},
+
+	render: function() {
+		<div className="row pad-top pad-bottom">
+			<div className="col-lg-3 col-md-3 col-sm-3">
+				<Conversations convos={this.state.convos}/>
+			</div>
+			<div className=" col-lg-6 col-md-6 col-sm-6">
+				<Messages messages={this.state.msgs}/>
+			</div>
+			<div className="col-lg-3 col-md-3 col-sm-3">
+				<OnlineUsers onliners={this.state.onliners}/>
+			</div>
+		</div>
+	}
+
+
+});
+
+var Conversations = React.createClass({
+
+	var convoRows = this.props.msgs.map(function(data) {
+		return (
+			<ConvoRow cr_id={data.cr_id} reply={data.reply} mms={data.mms} user_id_fk={data.user_id_fk} time={data.time} c_id_fk={data.c_id_fk} c_id={cid} offline={offline} />
+		)
+	});
+
+	render: function() {
+	<div className="conversation-div">
+        <div className="conversation-head">
+                        CONVERSATIONS
+        </div>
+        <ul id="tabs" style={nolist}>
+				{convoRows}
+		</ul>
+    </div>
+	}
+	
+
+});
+
+var ConvoRow = React.createClass({
+	render: function() {
+		<li style={convStyle} onClick={this.props.convoClicked}>
+				<a href={"#" + this.props.user_two} name={this.props.advisor}>
+					<div className="panel-body conversation" name={this.props.user_two}>
+						<div className="row">
+							<div className="pull-left col s4">
+							<img className="media-object" data-src="/static/msgico.png" alt="msgico" style={chatmsgstyle} src="/static/msgico.png" />
+							</div>
+							<div className="media-body col s8">
+							<h6 className="media-heading">{"+" + this.props.user_two}</h6>
+							</div>
+						</div>
+					</div>
+				</a>
+			</div>
+		</li>
+	}
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+var OnlineUsers = React.createClass({
+	var onliners = this.props.onliners;
+
+	var OnlineRows = 
+	render: function() {
+		<div className="chat-box-online-div">
+            <div className="chat-box-online-head">
+                ONLINE USERS
+            </div>
+            <div className="panel-body chat-box-online" id="online">
+            	{OnlineRows}
+            </div>
+
+        </div>
+	}
+
+});
+
+var OnlineRows = React.createClass({
+
+	render: function() {
+
+	}
+});
+
+
+
+React.render(
+	<ChatApp />,
+	document.getElementsByClassName("container-fluid")[0]
+	);
+
+</script>
+<body>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Home</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/chat">Chat<span class="sr-only">(current)</span></a></li>
+        <li><a href="#">Profile</a></li>
+      </ul>
+      <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default">Find</button>
+      </form>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a id="logOut">Log Out</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+<div class="container-fluid">
+<!-- React gets generated here -->
+</div>
