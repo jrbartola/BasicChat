@@ -24,7 +24,7 @@ Instant messaging system using Node.js and MongoDB
 ## Installation
 =========================
 **TO INSTALL:** use 
-    ```npm install git+https://isaacs@github.com/npm/npm.git```
+    ```npm install git+https://jrbartola@github.com/BasicChat.git```
     
 Once installed, navigate to directory where app2.js is located and type
     ```node app2.js```
