@@ -23,4 +23,9 @@ Instant messaging system using Node.js and MongoDB
     
 ## Installation
 =========================
-//TODO
+**TO INSTALL:** use 
+    npm install git+https://isaacs@github.com/npm/npm.git
+    
+Once installed, navigate to directory where app2.js is located and type
+    node app2.js
+into the console
