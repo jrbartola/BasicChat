@@ -1,0 +1,6 @@
+# Ignore Older Versions
+/_old
+
+# Ignore node modules
+/node_modules
+

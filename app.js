@@ -103,7 +103,7 @@ app.get('/api/user', function(req, res) {
 			res.json(user);
 			
 		});
-		//res.json({"username": req.session.user});
+
 	}
 });
 
@@ -117,7 +117,7 @@ app.get('/api/convos', function(req, res) {
 var online = []
 
 io.on("connection", function(socket) {
-	//console.log("new connect");
+	
 	
 	socket.on("new message", function(msg) {
 		// check if convo exists between two users. create it if it doesnt exist
@@ -145,13 +145,7 @@ io.on("connection", function(socket) {
 										});
 									});
 								});
-							});
-
-							
-							
-							
-							
-							
+							});						
 						});
 					});
 				});
@@ -182,17 +176,17 @@ io.on("connection", function(socket) {
 
 var delUser = function(socket, callback) {
 	online.some(function(usr) {
-			if (usr.socket === socket) {
+		if (usr.socket === socket) {
 				
-				online = online.filter(function(popped) {
-					// remove user from online list and pop from the list
-					console.log("User " + usr.username + " has left the chat.");
-					return popped.username != usr.username;
-				});
-			}
-		});
-	if (callback) {
-					
+			online = online.filter(function(popped) {
+				// remove user from online list and pop from the list
+				console.log("User " + usr.username + " has left the chat.");
+				return popped.username != usr.username;
+			});
+		}
+	});
+
+	if (callback) {		
 		return callback();
 	} else {
 		io.emit("refresh", online);
@@ -201,30 +195,30 @@ var delUser = function(socket, callback) {
 
 var loadUser = function(user, socket, callback) {
 	mongoose.findUser(user.username, function(foundUser) {
-			mongoose.findUserConvos(foundUser.username, function(convos) {
-				var duplicate = online.some(function (usr) {
-					return usr.username === foundUser.username;
-				});
+		mongoose.findUserConvos(foundUser.username, function(convos) {
+			var duplicate = online.some(function (usr) {
+				return usr.username === foundUser.username;
+			});
 
-				// only add to list of online users if it isn't already there
-				if (!duplicate) {
-					online.push({"username": foundUser.username,
-					 "socket": socket,
-					 "time": new Date(),
-					 "user_id": foundUser._id,
-					 "convo_ids": convos});
-				}
+			// only add to list of online users if it isn't already there
+			if (!duplicate) {
+				online.push({"username": foundUser.username,
+				 "socket": socket,
+				 "time": new Date(),
+				 "user_id": foundUser._id,
+				 "convo_ids": convos});
+			}
 				
-				console.log("User " + foundUser.username + " has joined the chat");
+			console.log("User " + foundUser.username + " has joined the chat");
 
-				mongoose.findAllMessages(function(messages) {
+			mongoose.findAllMessages(function(messages) {
 					
-					io.emit('new User', {"convos": online, "messages": messages});
-					//io.emit('refresh', online);
-					if (callback) return callback();
-				});
+				io.emit('new User', {"convos": online, "messages": messages});
+				//io.emit('refresh', online);
+				if (callback) return callback();
 			});
 		});
+	});
 }
 
 
