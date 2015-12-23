@@ -25,7 +25,7 @@ var auth = function(req, res, next) {
   if (req.session && req.session.user) {
     return next();
   } else {
-  	return res.sendFile(__dirname + "/assets/views/index.html");
+  	return res.sendFile(__dirname + "/assets/views/login.html");
   }
     
 };
@@ -40,11 +40,15 @@ var revAuth = function(req, res, next) {
 
 
 
-app.get('/', revAuth, function(req, res) {
+app.get('/', function(req, res) {
 	res.sendFile(__dirname + "/assets/views/index.html");
 });
 
-app.post('/', function(req, res) {
+app.get('/login', revAuth, function(req, res) {
+	res.sendFile(__dirname + "/assets/views/login.html")
+});
+
+app.post('/login', function(req, res) {
 	var username = req.body.username;
 	var password = req.body.password;
 	mongoose.loginUser(username, password, function(succeeded) {
