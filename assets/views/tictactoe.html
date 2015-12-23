@@ -8,15 +8,17 @@
     <style type="text/css">
         body {background-color: #b388ff;}
         .gametile {background-color: #6a1b9a; height: 148.917px; text-align: center; 
-            line-height:230%; }
+             }
         .hoverable {border-radius: 10px;}
-        
+        .fa { left: 42.172px;
+    margin: 43px 0 0 1px; transform:scale(2,2);}
+        .tic { left: 42.172px;
+    margin: 64px 0 0 1px; transform:scale(5,5);}
     </style>
     <script src="/js/jquery-1.11.1.js"></script>
     <script type="text/javascript" src="/js/materialize.min.js"></script>
     <script type="text/javascript" src="/js/materialize.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!--<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link type="text/css" rel="stylesheet" href="/css/materialize.min.css"  media="screen,projection"/>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.12.0/react.js"></script>
@@ -24,17 +26,8 @@
 </head>
 <script type="text/javascript">
 $(document).ready(function() {
-    $(".fa").hide();
-
-    $(".gametile").on("click", function() {
-        console.log("gotcha nose");
-        if ($(this).children().is(":visible")) {
-            $(this).children().hide();
-        } else {
-            $(this).children().show();
-        }
-        
-    });
+    console.log("prepare");
+    
 });
 
 </script>
@@ -45,6 +38,34 @@ var whosTurn;
 
 /*** @jsx React.DOM */
 var TicTac = React.createClass({
+    getInitialState: function() {
+        return {turn: "One"};
+    },
+
+    componentDidMount: function() {
+        //$(".fa").hide();
+        var that = this;
+
+        var hasMark = function(tileid) {
+            return $("#" + tileid).children().html() != "";
+        }
+
+        $(".gametile").on("click", function() {
+            if (hasMark($(this).parent().attr("id"))) {
+                return;
+            }
+
+            if (that.state.turn === "One") {
+                $(this).html('<i class="fa fa-times fa-2"></i>');
+                that.state.turn = "Two";
+            } else {
+                $(this).html('<i class="material-icons md-48 tic">panorama_fish_eye</i>');
+                that.state.turn = "One";
+            }
+        
+        });
+    },
+
     render: function() {
         return (
         <div className="row">
@@ -52,35 +73,35 @@ var TicTac = React.createClass({
             <br/>
             <div className="row">
                 <div id="tile0" className="col s4 hoverable">
-                    <h1 className="z-depth-4 gametile"><i className="fa fa-times fa-2"></i></h1>
+                    <h1 className="z-depth-4 gametile"></h1>
                 </div>
                 <div id="tile1" className="col s4 hoverable">
-                    <h1 className="z-depth-4 gametile"><i className="fa fa-times fa-2"></i></h1>
+                    <h1 className="z-depth-4 gametile"></h1>
                 </div>
                 <div id="tile2" className="col s4 hoverable">
-                    <h1 className="z-depth-4 gametile"><i className="fa fa-times fa-2"></i></h1>
+                    <h1 className="z-depth-4 gametile"></h1>
                 </div>
             </div>
             <div className="row">
                 <div id="tile3" className="col s4 hoverable">
-                    <h1 className="z-depth-4 gametile"><i className="fa fa-times fa-2"></i></h1>
+                    <h1 className="z-depth-4 gametile"></h1>
                 </div>
                 <div id="tile4" className="col s4 hoverable">
-                    <h1 className="z-depth-4 gametile"><i className="fa fa-times fa-2"></i></h1>
+                    <h1 className="z-depth-4 gametile"></h1>
                 </div>
                 <div id="tile5" className="col s4 hoverable">
-                    <h1 className="z-depth-4 gametile"><i className="fa fa-times fa-2"></i></h1>
+                    <h1 className="z-depth-4 gametile"></h1>
                 </div>
             </div>
             <div className="row">
                 <div id="tile6" className="col s4 hoverable">
-                    <h1 className="z-depth-4 gametile"><i className="fa fa-times fa-2"></i></h1>
+                    <h1 className="z-depth-4 gametile"></h1>
                 </div>
                 <div id="tile7" className="col s4 hoverable">
-                    <h1 className="z-depth-4 gametile"><i className="fa fa-times fa-2"></i></h1>
+                    <h1 className="z-depth-4 gametile"></h1>
                 </div>
                 <div id="tile8" className="col s4 hoverable">
-                    <h1 className="z-depth-4 gametile"><i className="fa fa-times fa-2"></i></h1>
+                    <h1 className="z-depth-4 gametile"></h1>
                 </div>
             </div>
         </div>

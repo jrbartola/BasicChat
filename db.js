@@ -23,7 +23,7 @@ var createConvo = function(attributes, callback) {
 	findUser(attributes.user_one, function(user_one) {
 		if (user_one) {
 			findUser(attributes.user_two, function(user_two) {
-				console.log("finding " + attributes.user_two);
+				//console.log("finding " + attributes.user_two);
 				if (user_two) {
 					attributes.user_one = user_one._id;
 					attributes.user_two = user_two._id;
