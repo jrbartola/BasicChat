@@ -98,10 +98,14 @@ var ChatApp = React.createClass({
 			init();
 		}
 		var lastmessage = this.state.messages[this.state.messages.length-1];
-		console.log(lastmessage);
-		var hasConvo = currentUser.convos.some(function(convo) {
-			return convo._id === lastmessage.convo_fk;
-		});
+			
+		if (lastmessage) {
+			var hasConvo = currentUser.convos.some(function(convo) {
+				return convo._id === lastmessage.convo_fk;
+			});
+		} else {
+			var hasConvo = false;
+		}
 
 		if (this.state.messages.length > prevState.messages.length &&
 			lastmessage.user_fk.username != currentUser.username && hasConvo) {
@@ -138,9 +142,11 @@ var ChatApp = React.createClass({
 		});
 
 		chatsocket.on("new User", function(data) {
-
-    		that.setState({convos: data.convos});
+			
+			that.setState({convos: data.convos});
     		that.setState({messages: data.messages});
+			
+    		
     		//console.log(that.state.convos);
     		
   		});
@@ -347,7 +353,7 @@ var MessageTabs = React.createClass({
 					return cnv._id === data.convo_fk;
 				});
 
-				//console.log(currentUser.convos);
+				console.log(currentUser);
 
 				var isMine = currentUser.convos.some(function (cnv) {
 					return data.convo_fk === cnv._id;
