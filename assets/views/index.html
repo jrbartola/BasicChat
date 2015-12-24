@@ -9,6 +9,12 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <![endif]-->
     <title>Login</title>
+    <style type="text/css">
+      body { background-color:lightgray;}
+      div.parallax-container { height:450px;}
+      .swag {transform: scale(2,2);}
+      .hoverable {border-radius:10px;}
+    </style>
     <script src="/js/jquery-1.11.1.js"></script>
     <script type="text/javascript" src="/js/materialize.min.js"></script>
     <script type="text/javascript" src="/js/materialize.js"></script>
@@ -22,34 +28,23 @@
 <script>
 
 $(document).ready(function() {
+    $(".parallax").parallax();
 
-    $("#login").on("submit", function() {
-        var username = $("#username").val();
-        var password = $("#password").val();
-        if ($("#errors").length != 0) {
-            $("#errors").remove();
+    var currentUser;
+    
+    $.getJSON("/api/user", function(user) {
+        if (user.username) {
+            currentUser = user;
+            $("#nav-mobile").append("<li><a href='#'>" + currentUser.username + "</a></li>");
+            $("#loggable").remove();
+            $("#titletag").html(currentUser.username + "'s Basic Chat");
+            $(".contaminer").prepend('<div class="collection">' +
+            '<a href="/tictac" class="collection-item red darken-4' +
+            ' grey-text text-lighten-5">Try out tic tac toe!<span class="new badge"></span></a></div>');
+            $(".right").html('<li><a id="logout" href="/logout">Log out</a></li>');
         }
-        if (username != "" && password != "") {
-
-            $.ajax({
-                url: '/',
-                method: 'post',
-                data: $("#login").serialize(),
-                success: function(authed) {
-                    if (authed) {
-                        window.location.href = '/chat';
-                    } else {
-                        
-                        Materialize.toast("Invalid credentials", 5000);
-                    }
-
-                }
-            });
-        } else {
-            Materialize.toast("Please fill out both fields!", 5000);
-        }
-        return false;
     });
+
 });
 
   
@@ -58,56 +53,84 @@ $(document).ready(function() {
 <nav class="red darken-4">
     <div class="nav-wrapper">
         <a href="#" class="brand-logo center">Basic Chat</a>
-        <ul id="nav-mobile" class="left hide-on-med-and-down">
+        <ul id="nav-mobile" class="left hide-on-small-and-down">
             <li><a href="/"><i class="material-icons left">store</i>Home</a></li>
             <li><a href="/chat">Chat</a></li>
             <!--<li><a href="#">Profile</a></li>-->
         </ul>
-        <ul class="right hide-on-med-and-down">
+        <ul class="right hide-on-small-and-down">
             <li><a class="btn grey lighten-5 red-text text-darken-4" href="/register">Register</a></li>
         </ul>
     </div>
   </nav>
 
-    <div class="container">
-    <div id="central" class="col s4">
-        <div class="collection">
-            <a href="/tictac" class="collection-item red darken-4 grey-text text-lighten-5">Try out tic tac toe!<span class="new badge"></span></a>
-        </div>
+    <div class="contaminer">
+    <!-- <div id="central" class="col s4">
         <div class="row">
         <div class="col s4 push-s4">
         
         
-        <div class="card-panel grey lighten-5 red-text text-darken-4">
-            <h2 align="center">Welcome!</h2>
+        
+        </div><div class="card-panel grey lighten-5 red-text text-darken-4">
+            <h3 align="center">Welcome!</h3>
 
         </div>
-        </div>
-    </div>
-    <form id="login">
-        
+    </div> -->
+    <div id="index-banner" class="parallax-container">
+        <div class="section no-pad-bot">
+            <div class="container">
+              
+              <h1 id="titletag" class="header center red-text text-darken-4">Basic Chat</h1>
+            <div class="row center">
+              <br/>
+              <h5 class="header col s12 white-text strong">Portable chat app on the go!</h5>
+            </div>
+            <br/>
+            <div id="loggable" class="row center">
+              <a href="/register" id="register-button" class="btn btn-large grey waves-effect lighten-5 red-text text-darken-4">Register</a>
+              <h5 class="header white-text strong">or</h5>
+              <a href="/login" id="login-button" class="btn btn-large grey waves-effect lighten-5 red-text text-darken-4">Login</a>
+            </div>
+            <br><br>
 
-        <div class="row">
-            <div class="input-field col s4 push-s4">
-                <i class="material-icons prefix">perm_identity</i>
-                <input type="text" class="validate" name="username" id="username">
-                <label class="active" for="username">Username</label>
             </div>
         </div>
-        <div class="row">
-            <div class="input-field col s4 push-s4">
-                <i class="material-icons prefix">vpn_key</i>
-                <input type="password" class="validate" name="password" id="password">
-                <label class="active" for="password">Password</label>
-            </div>
-        </div>
-        <div class="row">
-            <button type="submit" id="loginbutton" class="grey lighten-5 red-text text-darken-4 btn btn-large col s4 push-s4">Log in</button>
-        </div>
-        
-    </form>
+    <div class="parallax"><img src="/img/background-golf.jpg" alt="golf-bg" style="display: block; transform: translate3d(-50%, 290px, 0px);"></div>
     </div>
-    </div>
+
+    <div class="row container">
+        <div class="col s12 m4 hoverable">
+          <a href="/chat">
+          <div class="icon-block">
+            <h2 class="center red-text text-darken-4"><i class="material-icons swag">comment</i></h2>
+            <h5 class="center">Basic Chat v0.90</h5>
+
+            <p class="white-text">Try our chat system! Register for an account and proceed to chat with anybody online!</p>
+          </div>
+          </a>
+        </div>
+
+        <div class="col s12 m4 hoverable">
+          <a href="/tictac">
+          <div class="icon-block">
+            <h2 class="center red-text text-darken-4"><i class="material-icons swag">view_module</i></h2>
+            <h5 class="center">Tic Tac Toe</h5>
+
+            <p class="white-text">Currently in development, but is soon to be released as one of the most exciting versions of tic tac toe you have ever played!</p>
+          </div>
+          </a>
+        </div>
+
+        <div class="col s12 m4 hoverable">
+          <div class="icon-block">
+            <h1 class="center red-text text-darken-4"><i class="material-icons swag">query_builder</i></h1>
+            <h5 class="center">What's coming next?</h5>
+
+            <p class="white-text">Stay tuned...</p>
+          </div>
+        </div>
+      </div>
+</div>
 
     <!-- USING SCRIPTS BELOW TO REDUCE THE LOAD TIME -->
     <!-- CORE JQUERY SCRIPTS FILE -->

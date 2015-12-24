@@ -16,7 +16,13 @@ var userSchema = new Schema({
   admin: Boolean,
   location: String,
   created_at: Date,
-  updated_at: Date
+  updated_at: Date,
+  logins: Number,
+  tic_tac: {
+    wins: Number,
+    losses: Number,
+    draws: Number
+  }
   
 });
 
