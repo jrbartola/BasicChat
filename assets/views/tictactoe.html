@@ -18,6 +18,7 @@
     <script src="/js/jquery-1.11.1.js"></script>
     <script type="text/javascript" src="/js/materialize.min.js"></script>
     <script type="text/javascript" src="/js/materialize.js"></script>
+    <script type="text/javascript" src="/js/ttt.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link type="text/css" rel="stylesheet" href="/css/materialize.min.css"  media="screen,projection"/>
@@ -31,37 +32,59 @@ $(document).ready(function() {
 });
 
 </script>
-
 <script type="text/jsx">
-
-var whosTurn;
 
 /*** @jsx React.DOM */
 var TicTac = React.createClass({
     getInitialState: function() {
-        return {turn: "One"};
+        return {};
     },
 
     componentDidMount: function() {
-        //$(".fa").hide();
-        var that = this;
+        var ttt = new TicTacToe();
 
-        var hasMark = function(tileid) {
-            return $("#" + tileid).children().html() != "";
-        }
+        var that = this;
+        //console.log(this.state.TicTac);
+        // represents html insignia for both X and O pieces
+        var xInsig = '<i class="fa fa-times fa-2"></i>';
+        var oInsig = '<i class="material-icons md-48 tic">panorama_fish_eye</i>';
+
+        // var hasMark = function(tileid) {
+        //     return $("#" + tileid).children().html() != "";
+        // }
 
         $(".gametile").on("click", function() {
-            if (hasMark($(this).parent().attr("id"))) {
-                return;
+            // Represents current tile that was clicked and playing coordinates of tile
+            var tile = $(this).parent().attr("id").substring(4);
+            var xCord = tile.split(".")[0];
+            var yCord = tile.split(".")[1];
+
+            var which = ttt.doMove(xCord, yCord);
+            
+            if (which === "X") {
+                $(this).html(xInsig);
+            } else if (which === "O") {
+                $(this).html(oInsig);
+            } else if (which === null) {
+                for (var i = 0; i < $(".gametile").length; i++) {
+                    $($(".gametile")[i]).html("");
+                }
             }
 
-            if (that.state.turn === "One") {
-                $(this).html('<i class="fa fa-times fa-2"></i>');
-                that.state.turn = "Two";
-            } else {
-                $(this).html('<i class="material-icons md-48 tic">panorama_fish_eye</i>');
-                that.state.turn = "One";
-            }
+
+
+
+            // if (hasMark($(this).parent().attr("id"))) {
+            //     return;
+            // }
+
+            // if (that.state.turn === "One") {
+            //     $(this).html('<i class="fa fa-times fa-2"></i>');
+            //     that.state.turn = "Two";
+            // } else {
+            //     $(this).html('<i class="material-icons md-48 tic">panorama_fish_eye</i>');
+            //     that.state.turn = "One";
+            // }
         
         });
     },
@@ -72,35 +95,35 @@ var TicTac = React.createClass({
         <div id="gameContainer" className="col s6 push-s3">
             <br/>
             <div className="row">
-                <div id="tile0" className="col s4 hoverable">
+                <div id="tile0.0" className="col s4 hoverable">
                     <h1 className="z-depth-4 gametile"></h1>
                 </div>
-                <div id="tile1" className="col s4 hoverable">
+                <div id="tile1.0" className="col s4 hoverable">
                     <h1 className="z-depth-4 gametile"></h1>
                 </div>
-                <div id="tile2" className="col s4 hoverable">
-                    <h1 className="z-depth-4 gametile"></h1>
-                </div>
-            </div>
-            <div className="row">
-                <div id="tile3" className="col s4 hoverable">
-                    <h1 className="z-depth-4 gametile"></h1>
-                </div>
-                <div id="tile4" className="col s4 hoverable">
-                    <h1 className="z-depth-4 gametile"></h1>
-                </div>
-                <div id="tile5" className="col s4 hoverable">
+                <div id="tile2.0" className="col s4 hoverable">
                     <h1 className="z-depth-4 gametile"></h1>
                 </div>
             </div>
             <div className="row">
-                <div id="tile6" className="col s4 hoverable">
+                <div id="tile0.1" className="col s4 hoverable">
                     <h1 className="z-depth-4 gametile"></h1>
                 </div>
-                <div id="tile7" className="col s4 hoverable">
+                <div id="tile1.1" className="col s4 hoverable">
                     <h1 className="z-depth-4 gametile"></h1>
                 </div>
-                <div id="tile8" className="col s4 hoverable">
+                <div id="tile2.1" className="col s4 hoverable">
+                    <h1 className="z-depth-4 gametile"></h1>
+                </div>
+            </div>
+            <div className="row">
+                <div id="tile0.2" className="col s4 hoverable">
+                    <h1 className="z-depth-4 gametile"></h1>
+                </div>
+                <div id="tile1.2" className="col s4 hoverable">
+                    <h1 className="z-depth-4 gametile"></h1>
+                </div>
+                <div id="tile2.2" className="col s4 hoverable">
                     <h1 className="z-depth-4 gametile"></h1>
                 </div>
             </div>
@@ -126,12 +149,12 @@ React.render(
 <nav class="purple darken-3">
   <div class="nav-wrapper">
     <a href="#" class="brand-logo center">Tic Tac Toe</a>
-    <ul id="nav-mobile" class="left hide-on-med-and-down">
+    <ul id="nav-mobile" class="left hide-on-small-and-down">
       <li><a href="/"><i class="material-icons left">store</i>Home</a></li>
       <li><a href="/chat">Chat</a></li>
       <li><a id="profile" href="#">Profile</a></li>
       </ul>
-    <ul class="right hide-on-med-and-down">
+    <ul class="right hide-on-small-and-down">
       <li><a id="logout" href="/logout">Log out</a></li>
     </ul>
   </div>
