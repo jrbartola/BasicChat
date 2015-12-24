@@ -97,14 +97,14 @@ var ChatApp = React.createClass({
 		if (this.state.convos.length > prevState.convos.length) {
 			init();
 		}
+
 		var lastmessage = this.state.messages[this.state.messages.length-1];
 			
-		if (lastmessage) {
-			var hasConvo = currentUser.convos.some(function(convo) {
+		var hasConvo = false;
+		if (lastmessage && currentUser.convos) {
+			hasConvo = currentUser.convos.some(function(convo) {
 				return convo._id === lastmessage.convo_fk;
 			});
-		} else {
-			var hasConvo = false;
 		}
 
 		if (this.state.messages.length > prevState.messages.length &&
@@ -347,18 +347,20 @@ var MessageTabs = React.createClass({
 		if (this.props.messages.length > 0) {
 			var that = this;
 			var Msgs = this.props.messages.map(function(data) {
-				//console.log(that.props.convos_ids);
+				// map each message to a msg object in the current tab
 				var isIn = that.props.convo_ids.some(function (cnv) {
-					//console.log(cnv._id + " could be =to " + data.convo_fk);
+					
 					return cnv._id === data.convo_fk;
 				});
 
-				console.log(currentUser);
-
-				var isMine = currentUser.convos.some(function (cnv) {
-					return data.convo_fk === cnv._id;
-				});
-
+				
+				var isMine = false;
+				if (currentUser.convos) {
+					isMine = currentUser.convos.some(function (cnv) {
+						return data.convo_fk === cnv._id;
+					});
+				}
+				
 
 				if (isIn && isMine) {
 					return(
