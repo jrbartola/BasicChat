@@ -16,13 +16,7 @@ function TicTacToe() {
             this.state.mark(x, y, this.turn);
             this.moves++;
             
-
-            if (this.isFull()) {
-                Materialize.toast("It is a draw. No winner!", 5000);
-                this.reset();
-                return null;
-            }
-
+            // check if there is a winner after the move is made
             var whoWon = this.state.checkWinner(x, y, this.turn);
             
             if (whoWon != null) {
@@ -35,6 +29,12 @@ function TicTacToe() {
                     this.reset();
                     return null;
                 }
+            }
+
+            if (this.isFull()) {
+                Materialize.toast("It is a draw. No winner!", 5000);
+                this.reset();
+                return null;
             }
 
             this.turn = !this.turn;
@@ -75,10 +75,10 @@ function State() {
     }
 
     this.checkWinner = function(x, y, lastMove) {
-        //console.log("x: " + x + "\ny: " + y + "\nlastMove: " + lastMove);
+        
+        // check for winning columns
         for (var i = 0; i < 3; i++) {
-            if (this.board[x][i] != lastMove) {
-                //console.log("Break caused by col at " + x + "," + i + ": " + this.board[x][i]);
+            if (this.board[x][i] != lastMove) {   
                 break;
             }
             if (i == 2) {
@@ -86,9 +86,9 @@ function State() {
             }
         }
 
+        // check for winning rows
         for (var i = 0; i < 3; i++) {
             if (this.board[i][y] != lastMove) {
-                //console.log("Break caused by row at " + i + "," + y + ": " + this.board[i][y]);
                 break;
             }
             if (i == 2) {
@@ -96,10 +96,10 @@ function State() {
             }
         }
 
+        // check for winning diagonal
         if (x === y) {
             for (var i = 0; i < 3; i++) {
                 if (this.board[i][i] != lastMove) {
-                    //console.log("Break caused by diag at " + i + "," + i + ": " + this.board[i][i]);
                     break;
                 }
                 if (i === 2) {
@@ -108,9 +108,9 @@ function State() {
             }
         }
 
+        // check for winning reverse diagonal
         for (var i = 0; i < 3; i++) {
             if (this.board[i][2-i] != lastMove) {
-                //console.log("Break caused by rev-diag at " + i + "," + (2-i) + ": " + this.board[i][2-i]);
                 break;
             }
             if (i === 2) {

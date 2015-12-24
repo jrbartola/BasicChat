@@ -27,10 +27,8 @@
 </head>
 <script type="text/javascript">
 $(document).ready(function() {
-    console.log("prepare");
-    
+    // unnecessary jQuery
 });
-
 </script>
 <script type="text/jsx">
 
@@ -43,15 +41,10 @@ var TicTac = React.createClass({
     componentDidMount: function() {
         var ttt = new TicTacToe();
 
-        var that = this;
-        //console.log(this.state.TicTac);
         // represents html insignia for both X and O pieces
         var xInsig = '<i class="fa fa-times fa-2"></i>';
         var oInsig = '<i class="material-icons md-48 tic">panorama_fish_eye</i>';
 
-        // var hasMark = function(tileid) {
-        //     return $("#" + tileid).children().html() != "";
-        // }
 
         $(".gametile").on("click", function() {
             // Represents current tile that was clicked and playing coordinates of tile
@@ -66,25 +59,11 @@ var TicTac = React.createClass({
             } else if (which === "O") {
                 $(this).html(oInsig);
             } else if (which === null) {
+                // if gameover reset the board
                 for (var i = 0; i < $(".gametile").length; i++) {
                     $($(".gametile")[i]).html("");
                 }
             }
-
-
-
-
-            // if (hasMark($(this).parent().attr("id"))) {
-            //     return;
-            // }
-
-            // if (that.state.turn === "One") {
-            //     $(this).html('<i class="fa fa-times fa-2"></i>');
-            //     that.state.turn = "Two";
-            // } else {
-            //     $(this).html('<i class="material-icons md-48 tic">panorama_fish_eye</i>');
-            //     that.state.turn = "One";
-            // }
         
         });
     },
