@@ -29,7 +29,22 @@
 
 $(document).ready(function() {
     $(".parallax").parallax();
+
+    var currentUser;
     
+    $.getJSON("/api/user", function(user) {
+        if (user.username) {
+            currentUser = user;
+            $("#nav-mobile").append("<li><a href='#'>" + currentUser.username + "</a></li>");
+            $("#loggable").remove();
+            $("#titletag").html(currentUser.username + "'s Basic Chat");
+            $(".contaminer").prepend('<div class="collection">' +
+            '<a href="/tictac" class="collection-item red darken-4' +
+            ' grey-text text-lighten-5">Try out tic tac toe!<span class="new badge"></span></a></div>');
+            $(".right").html('<li><a id="logout" href="/logout">Log out</a></li>');
+        }
+    });
+
 });
 
   
@@ -65,13 +80,13 @@ $(document).ready(function() {
         <div class="section no-pad-bot">
             <div class="container">
               
-              <h1 class="header center red-text text-darken-4">Basic Chat</h1>
+              <h1 id="titletag" class="header center red-text text-darken-4">Basic Chat</h1>
             <div class="row center">
               <br/>
               <h5 class="header col s12 white-text strong">Portable chat app on the go!</h5>
             </div>
             <br/>
-            <div class="row center">
+            <div id="loggable" class="row center">
               <a href="/register" id="register-button" class="btn btn-large grey waves-effect lighten-5 red-text text-darken-4">Register</a>
               <h5 class="header white-text strong">or</h5>
               <a href="/login" id="login-button" class="btn btn-large grey waves-effect lighten-5 red-text text-darken-4">Login</a>

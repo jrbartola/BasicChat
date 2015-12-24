@@ -82,7 +82,7 @@ app.get('/register', function(req, res) {
 	res.sendFile(__dirname + "/assets/views/register.html");
 });
 
-app.get('/tictac', function(req, res) {
+app.get('/tictac', auth, function(req, res) {
 	res.sendFile(__dirname + "/assets/views/tictactoe.html");
 });
 
@@ -99,6 +99,9 @@ app.post('/register', function(req, res) {
 	
 });
 
+// gets user info from session. if no use is logged in, 
+// return empty json response
+
 app.get('/api/user', function(req, res) {
 	if (!req.session.user) {
 		res.json({});
@@ -107,7 +110,6 @@ app.get('/api/user', function(req, res) {
 			res.json(user);
 			
 		});
-
 	}
 });
 
