@@ -1,0 +1,121 @@
+﻿<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="Basic Chat Login Page" />
+    <meta name="author" content="Jesse Bartola" />
+    <link rel="shortcut icon" href="/img/favicon.ico" />
+    <!--[if IE]>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <![endif]-->
+    <title>Login</title>
+    <style type="text/css">
+      body { background-color:lightgray;}
+      
+    </style>
+    <script src="/js/jquery-1.11.1.js"></script>
+    <script type="text/javascript" src="/js/materialize.min.js"></script>
+    <script type="text/javascript" src="/js/materialize.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="/css/materialize.min.css"  media="screen,projection"/>
+    <!-- CUSTOM STYLE CSS -->
+</head>
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+
+$(document).ready(function() {
+
+    $("#login").on("submit", function() {
+        var username = $("#username").val();
+        var password = $("#password").val();
+        if ($("#errors").length != 0) {
+            $("#errors").remove();
+        }
+        if (username != "" && password != "") {
+
+            $.ajax({
+                url: '/login',
+                method: 'post',
+                data: $("#login").serialize(),
+                success: function(authed) {
+                    if (authed) {
+                        window.location.href = '/chat';
+                    } else {
+                        
+                        Materialize.toast("Invalid credentials", 5000);
+                    }
+
+                }
+            });
+        } else {
+            Materialize.toast("Please fill out both fields!", 5000);
+        }
+        return false;
+    });
+});
+
+  
+</script>
+<body>
+<nav class="red darken-4">
+    <div class="nav-wrapper">
+        <a href="#" class="brand-logo center">Basic Chat</a>
+        <ul id="nav-mobile" class="left hide-on-med-and-down">
+            <li><a href="/"><i class="material-icons left">store</i>Home</a></li>
+            <li><a href="/chat">Chat</a></li>
+            <!--<li><a href="#">Profile</a></li>-->
+        </ul>
+        <ul class="right hide-on-med-and-down">
+            <li><a class="btn grey lighten-5 red-text text-darken-4" href="/register">Register</a></li>
+        </ul>
+    </div>
+  </nav>
+
+    <div class="container">
+    <div id="central" class="col s4">
+        <div class="collection">
+            <a href="/tictac" class="collection-item red darken-4 grey-text text-lighten-5">Try out tic tac toe!<span class="new badge"></span></a>
+        </div>
+        <div class="row">
+        <div class="col s4 push-s4">
+        
+        
+        <div class="card-panel grey lighten-5 red-text text-darken-4">
+            <h2 align="center">Welcome!</h2>
+
+        </div>
+        </div>
+    </div>
+    <form id="login">
+        
+
+        <div class="row">
+            <div class="input-field col s4 push-s4">
+                <i class="material-icons prefix">perm_identity</i>
+                <input type="text" class="validate" name="username" id="username">
+                <label class="active" for="username">Username</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s4 push-s4">
+                <i class="material-icons prefix">vpn_key</i>
+                <input type="password" class="validate" name="password" id="password">
+                <label class="active" for="password">Password</label>
+            </div>
+        </div>
+        <div class="row">
+            <button type="submit" id="loginbutton" class="grey lighten-5 red-text text-darken-4 btn btn-large col s4 push-s4">Log in</button>
+        </div>
+        
+    </form>
+    </div>
+    </div>
+
+    <!-- USING SCRIPTS BELOW TO REDUCE THE LOAD TIME -->
+    <!-- CORE JQUERY SCRIPTS FILE -->
+    
+</body>
+
+</html>
