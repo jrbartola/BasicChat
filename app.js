@@ -18,6 +18,7 @@ app.use(session({
 
 app.use(bodyParser.urlencoded({ extended: false })); 
 app.use(bodyParser.json());
+
 // set static directory
 app.use(express.static(__dirname + '/assets'));
 
@@ -25,7 +26,7 @@ var auth = function(req, res, next) {
   if (req.session && req.session.user) {
     return next();
   } else {
-  	return res.sendFile(__dirname + "/assets/views/login.html");
+  	return res.redirect('/');
   }
     
 };
@@ -35,7 +36,7 @@ var revAuth = function(req, res, next) {
   if (!req.session || !req.session.user)
     return next();
   else
-    return res.sendFile(__dirname + "/assets/views/chat.html");
+    return res.redirect('/');
 };
 
 
@@ -56,8 +57,10 @@ app.post('/login', function(req, res) {
 		if (succeeded) {
 			req.session.user = username;
 			currentUser = username;
-			console.log("User " + username + " has logged in.");
-			res.send(true);
+			timeStamp("User " + username + " has logged in.");
+			mongoose.updateLogins(username, function() {
+				res.send(true);
+			});
 		} else {
 			res.send(false);
 		}
@@ -82,10 +85,6 @@ app.get('/register', function(req, res) {
 	res.sendFile(__dirname + "/assets/views/register.html");
 });
 
-app.get('/tictac', auth, function(req, res) {
-	res.sendFile(__dirname + "/assets/views/tictactoe.html");
-});
-
 app.post('/register', function(req, res) {
 	var params = {name: req.body.name,
 				  username: req.body.username,
@@ -95,7 +94,7 @@ app.post('/register', function(req, res) {
 				  };
 
 	mongoose.createUser(params);
-	res.redirect("/");
+	res.redirect("/login");
 	
 });
 
@@ -114,16 +113,16 @@ app.get('/api/user', function(req, res) {
 });
 
 app.get('/api/convos', function(req, res) {
-	mongoose.findUserConvos(req.session.user, function(convos) {
-		
+	mongoose.findUserConvos(req.session.user, function(convos) {		
 		res.json(convos);
 	});
 });
 
+
 var online = []
 
+
 io.on("connection", function(socket) {
-	
 	
 	socket.on("new message", function(msg) {
 		// check if convo exists between two users. create it if it doesnt exist
@@ -186,7 +185,7 @@ var delUser = function(socket, callback) {
 				
 			online = online.filter(function(popped) {
 				// remove user from online list and pop from the list
-				console.log("User " + usr.username + " has left the chat.");
+				timeStamp("User " + usr.username + " has left the chat.");
 				return popped.username != usr.username;
 			});
 		}
@@ -215,7 +214,7 @@ var loadUser = function(user, socket, callback) {
 				 "convo_ids": convos});
 			}
 				
-			console.log("User " + foundUser.username + " has joined the chat");
+			timeStamp("User " + foundUser.username + " has joined the chat");
 
 			mongoose.findAllMessages(function(messages) {
 					
@@ -225,6 +224,23 @@ var loadUser = function(user, socket, callback) {
 			});
 		});
 	});
+}
+
+var timeStamp = function(string) {
+	Number.prototype.padLeft = function(base,chr){
+   		var  len = (String(base || 10).length - String(this).length)+1;
+   		return len > 0? new Array(len).join(chr || '0')+this : this;
+	}
+
+	var d = new Date(),
+       dformat = [ (d.getMonth()+1).padLeft(),
+                    d.getDate().padLeft(),
+                    d.getFullYear()].join('/')+
+                    ' ' +
+                  [ d.getHours().padLeft(),
+                    d.getMinutes().padLeft(),
+                    d.getSeconds().padLeft()].join(':');
+    console.log("[" + dformat + "]  " + string);
 }
 
 

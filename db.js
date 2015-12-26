@@ -50,16 +50,18 @@ var createConvo = function(attributes, callback) {
 
 var createMessage = function(attributes, callback) {
 	attributes.time = new Date();
-	console.log("Date for message is : " + attributes.time);
+	
 	findUser(attributes.user_fk, function(user_fk) {
 		if (user_fk) {
 			attributes.user_fk = user_fk._id;
 
 			var newMessage = new schemas.Message(attributes);
+			user_fk.msgs_sent = user_fk.msgs_sent + 1;
+			user_fk.save();
 
 			newMessage.save(function(error) {
 				if (error) console.dir(error);
-				//console.log("Message created!");
+				
 				return callback();
 			});
 		} else {
@@ -171,6 +173,16 @@ var findAllMessages = function(callback) {
 		});
 }
 
+var updateLogins = function(username, callback) {
+	schemas.User.findOne({username: username}, function(err, user) {
+		if (err) console.error("ERROR: " + err.message);
+
+		user.logins = user.logins + 1;
+		user.save();
+		return callback();
+	});
+}
+
 
 // make this available to our users in our Node applications
 module.exports.findUser = findUser;
@@ -182,3 +194,4 @@ module.exports.createUser = createUser;
 module.exports.createConvo = createConvo;
 module.exports.createMessage = createMessage;
 module.exports.loginUser = loginUser;
+module.exports.updateLogins = updateLogins;
