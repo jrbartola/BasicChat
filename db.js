@@ -14,7 +14,7 @@ var createUser = function(attributes) {
 
 	newUser.save(function(error) {
 		if (error) throw error;
-		console.log("User " + attributes.name + " registered!");
+		timeStamp("User " + attributes.name + " registered!");
 	});
 }
 
@@ -32,17 +32,17 @@ var createConvo = function(attributes, callback) {
 
 					newConvo.save(function(error) {
 						if (error) console.dir(error);
-						console.log("Conversation created between " + user_one.username + 
+						timeStamp("Conversation created between " + user_one.username + 
 							" and " + user_two.username);
 						return callback(newConvo);
 		
 					});
 				} else {
-					console.log("No user_two found.");
+					timeStamp("No user_two found for " + attributes.user_two + ".");
 				} // write else clauses later // create user for user_two
 			});
 		}  else {
-			console.log("No user_one found.");
+			timeStamp("No user_one found for " + attributes.user_one + ".");
 		}// write else clauses later // create user for user_one
 	})
 	
@@ -65,7 +65,7 @@ var createMessage = function(attributes, callback) {
 				return callback();
 			});
 		} else {
-			console.log("No user found from attributes.");
+			timeStamp("No user found from attributes.");
 		}
 	});
 
@@ -87,7 +87,7 @@ var loginUser = function(username, password, callback) {
   			
   		}
 
-  		console.log('Unsuccessful login attempt for user ' + username);
+  		timeStamp('Unsuccessful login attempt for user ' + username);
   		return callback(false);
 
 	});
@@ -166,6 +166,7 @@ var findMessages = function(user, callback) {
 var findAllMessages = function(callback) {
 	var query = schemas.Message.find({});
 		query.populate('user_fk');
+		query.sort({time: "asc"});
 		query.exec(function(err, messages) {
 			if (err) console.error("ERROR: " + err.message);
 			
@@ -183,6 +184,23 @@ var updateLogins = function(username, callback) {
 	});
 }
 
+var timeStamp = function(string) {
+	Number.prototype.padLeft = function(base,chr){
+   		var  len = (String(base || 10).length - String(this).length)+1;
+   		return len > 0? new Array(len).join(chr || '0')+this : this;
+	}
+
+	var d = new Date(),
+       dformat = [ (d.getMonth()+1).padLeft(),
+                    d.getDate().padLeft(),
+                    d.getFullYear()].join('/')+
+                    ' ' +
+                  [ d.getHours().padLeft(),
+                    d.getMinutes().padLeft(),
+                    d.getSeconds().padLeft()].join(':');
+    console.log("[" + dformat + "]  " + string);
+}
+
 
 // make this available to our users in our Node applications
 module.exports.findUser = findUser;
@@ -195,3 +213,4 @@ module.exports.createConvo = createConvo;
 module.exports.createMessage = createMessage;
 module.exports.loginUser = loginUser;
 module.exports.updateLogins = updateLogins;
+module.exports.timeStamp = timeStamp;

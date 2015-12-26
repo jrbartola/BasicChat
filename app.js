@@ -57,7 +57,7 @@ app.post('/login', function(req, res) {
 		if (succeeded) {
 			req.session.user = username;
 			currentUser = username;
-			timeStamp("User " + username + " has logged in.");
+			mongoose.timeStamp("User " + username + " has logged in.");
 			mongoose.updateLogins(username, function() {
 				res.send(true);
 			});
@@ -71,7 +71,7 @@ app.post('/login', function(req, res) {
 
 
 app.get('/logout', function(req, res) {
-	console.log("User " + req.session.user + " has logged out.");
+	mongoose.timeStamp("User " + req.session.user + " has logged out.");
 	currentUser = "";
 	req.session.destroy();
 	res.sendFile(__dirname + "/assets/views/index.html");
@@ -128,6 +128,7 @@ io.on("connection", function(socket) {
 		// check if convo exists between two users. create it if it doesnt exist
 		mongoose.findConvo(msg.username, msg.recipient, function(convo) {
 			if (!convo) {
+				console.log("No convo exists!?");
 				var attribs = {"user_one": msg.username, "user_two": msg.recipient};
 				mongoose.createConvo(attribs, function(convo) {
 					mongoose.createMessage({"text": msg.message,
@@ -185,7 +186,7 @@ var delUser = function(socket, callback) {
 				
 			online = online.filter(function(popped) {
 				// remove user from online list and pop from the list
-				timeStamp("User " + usr.username + " has left the chat.");
+				mongoose.timeStamp("User " + usr.username + " has left the chat.");
 				return popped.username != usr.username;
 			});
 		}
@@ -214,7 +215,7 @@ var loadUser = function(user, socket, callback) {
 				 "convo_ids": convos});
 			}
 				
-			timeStamp("User " + foundUser.username + " has joined the chat");
+			mongoose.timeStamp("User " + foundUser.username + " has joined the chat");
 
 			mongoose.findAllMessages(function(messages) {
 					
@@ -226,22 +227,7 @@ var loadUser = function(user, socket, callback) {
 	});
 }
 
-var timeStamp = function(string) {
-	Number.prototype.padLeft = function(base,chr){
-   		var  len = (String(base || 10).length - String(this).length)+1;
-   		return len > 0? new Array(len).join(chr || '0')+this : this;
-	}
 
-	var d = new Date(),
-       dformat = [ (d.getMonth()+1).padLeft(),
-                    d.getDate().padLeft(),
-                    d.getFullYear()].join('/')+
-                    ' ' +
-                  [ d.getHours().padLeft(),
-                    d.getMinutes().padLeft(),
-                    d.getSeconds().padLeft()].join(':');
-    console.log("[" + dformat + "]  " + string);
-}
 
 
 
