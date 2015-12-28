@@ -1,11 +1,14 @@
+'use strict';
+
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/test');
 var Schema = mongoose.Schema;
 
+
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, "Didn't connect to database"));
 db.once('open', function (callback) {
-  // yay!
+
 });
 
 var userSchema = new Schema({
@@ -17,13 +20,8 @@ var userSchema = new Schema({
   location: String,
   created_at: Date,
   updated_at: Date,
-  logins: Number,
-  tic_tac: {
-    wins: Number,
-    losses: Number,
-    draws: Number
-  }
-  
+  logins: {type: Number, default: 0},
+  msgs_sent: {type: Number, default: 0}
 });
 
 var convoSchema = new Schema({

@@ -1,3 +1,5 @@
+'use strict';
+
 var schemas = require('./schemas.js');
 var bcrypt = require('bcrypt');
 
@@ -14,7 +16,7 @@ var createUser = function(attributes) {
 
 	newUser.save(function(error) {
 		if (error) throw error;
-		console.log("User " + attributes.name + " registered!");
+		timeStamp("User " + attributes.name + " registered!");
 	});
 }
 
@@ -32,17 +34,17 @@ var createConvo = function(attributes, callback) {
 
 					newConvo.save(function(error) {
 						if (error) console.dir(error);
-						console.log("Conversation created between " + user_one.username + 
+						timeStamp("Conversation created between " + user_one.username + 
 							" and " + user_two.username);
 						return callback(newConvo);
 		
 					});
 				} else {
-					console.log("No user_two found.");
+					timeStamp("No user_two found for " + attributes.user_two + ".");
 				} // write else clauses later // create user for user_two
 			});
 		}  else {
-			console.log("No user_one found.");
+			timeStamp("No user_one found for " + attributes.user_one + ".");
 		}// write else clauses later // create user for user_one
 	})
 	
@@ -50,20 +52,22 @@ var createConvo = function(attributes, callback) {
 
 var createMessage = function(attributes, callback) {
 	attributes.time = new Date();
-	console.log("Date for message is : " + attributes.time);
+	
 	findUser(attributes.user_fk, function(user_fk) {
 		if (user_fk) {
 			attributes.user_fk = user_fk._id;
 
 			var newMessage = new schemas.Message(attributes);
+			user_fk.msgs_sent = user_fk.msgs_sent + 1;
+			user_fk.save();
 
 			newMessage.save(function(error) {
 				if (error) console.dir(error);
-				//console.log("Message created!");
+				
 				return callback();
 			});
 		} else {
-			console.log("No user found from attributes.");
+			timeStamp("No user found from attributes.");
 		}
 	});
 
@@ -75,7 +79,7 @@ var loginUser = function(username, password, callback) {
 		
   		if (err) console.error("ERROR: " + err.message);
   		if (user != null) {
-  			hashed = user["password"];
+  			var hashed = user["password"];
 
   			var goodLogin = bcrypt.compareSync(password, hashed);
   			if (goodLogin) {
@@ -85,7 +89,7 @@ var loginUser = function(username, password, callback) {
   			
   		}
 
-  		console.log('Unsuccessful login attempt for user ' + username);
+  		timeStamp('Unsuccessful login attempt for user ' + username);
   		return callback(false);
 
 	});
@@ -164,11 +168,39 @@ var findMessages = function(user, callback) {
 var findAllMessages = function(callback) {
 	var query = schemas.Message.find({});
 		query.populate('user_fk');
+		query.sort({time: "asc"});
 		query.exec(function(err, messages) {
 			if (err) console.error("ERROR: " + err.message);
 			
 			return callback(messages);
 		});
+}
+
+var updateLogins = function(username, callback) {
+	schemas.User.findOne({username: username}, function(err, user) {
+		if (err) console.error("ERROR: " + err.message);
+
+		user.logins = user.logins + 1;
+		user.save();
+		return callback();
+	});
+}
+
+var timeStamp = function(string) {
+	Number.prototype.padLeft = function(base,chr){
+   		var  len = (String(base || 10).length - String(this).length)+1;
+   		return len > 0? new Array(len).join(chr || '0')+this : this;
+	}
+
+	var d = new Date(),
+       dformat = [ (d.getMonth()+1).padLeft(),
+                    d.getDate().padLeft(),
+                    d.getFullYear()].join('/')+
+                    ' ' +
+                  [ d.getHours().padLeft(),
+                    d.getMinutes().padLeft(),
+                    d.getSeconds().padLeft()].join(':');
+    console.log("[" + dformat + "]  " + string);
 }
 
 
@@ -182,3 +214,5 @@ module.exports.createUser = createUser;
 module.exports.createConvo = createConvo;
 module.exports.createMessage = createMessage;
 module.exports.loginUser = loginUser;
+module.exports.updateLogins = updateLogins;
+module.exports.timeStamp = timeStamp;

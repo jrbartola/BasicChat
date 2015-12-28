@@ -4,3 +4,5 @@
 # Ignore node modules
 /node_modules
 
+# Ignore old file copy
+/assets/views/chat_old.html

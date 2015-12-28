@@ -35,12 +35,13 @@ $(document).ready(function() {
     $.getJSON("/api/user", function(user) {
         if (user.username) {
             currentUser = user;
-            $("#nav-mobile").append("<li><a href='#'>" + currentUser.username + "</a></li>");
+            var firstname = currentUser.name.split(" ")[0];
+            $("#nav-mobile").append("<li><a href='/profile'>" + currentUser.username + "</a></li>");
             $("#loggable").remove();
-            $("#titletag").html(currentUser.username + "'s Basic Chat");
-            $(".contaminer").prepend('<div class="collection">' +
-            '<a href="/tictac" class="collection-item red darken-4' +
-            ' grey-text text-lighten-5">Try out tic tac toe!<span class="new badge"></span></a></div>');
+            $("#titletag").html(firstname + "'s Basic Chat");
+            // $(".contaminer").prepend('<div class="collection">' +
+            // '<a href="/tictac" class="collection-item red darken-4' +
+            // ' grey-text text-lighten-5">Try out tic tac toe!<span class="new badge"></span></a></div>');
             $(".right").html('<li><a id="logout" href="/logout">Log out</a></li>');
         }
     });
@@ -100,33 +101,29 @@ $(document).ready(function() {
 
     <div class="row container">
         <div class="col s12 m4 hoverable">
-          <a href="/chat">
           <div class="icon-block">
-            <h2 class="center red-text text-darken-4"><i class="material-icons swag">comment</i></h2>
-            <h5 class="center">Basic Chat v0.90</h5>
+            <h2 class="center red-text text-darken-4"><i class="material-icons swag">settings_input_component</i></h2>
+            <h5 class="center">Socket.io</h5>
 
-            <p class="white-text">Try our chat system! Register for an account and proceed to chat with anybody online!</p>
+            <p class="white-text">Instantanious messaging through the use of javascript's Sockiet.io! No more waiting around for syncronous chat queries to be processed.</p>
           </div>
-          </a>
         </div>
 
         <div class="col s12 m4 hoverable">
-          <a href="/tictac">
           <div class="icon-block">
-            <h2 class="center red-text text-darken-4"><i class="material-icons swag">view_module</i></h2>
-            <h5 class="center">Tic Tac Toe</h5>
+            <h2 class="center red-text text-darken-4"><i class="material-icons swag">dns</i></h2>
+            <h5 class="center">MongoDB</h5>
 
-            <p class="white-text">Currently in development, but is soon to be released as one of the most exciting versions of tic tac toe you have ever played!</p>
+            <p class="white-text">Stores and retrieves data using the lightweight NoSQL database MongoDB! A schemaless database makes an application easily scalable across all platforms.</p>
           </div>
-          </a>
         </div>
 
         <div class="col s12 m4 hoverable">
           <div class="icon-block">
             <h1 class="center red-text text-darken-4"><i class="material-icons swag">query_builder</i></h1>
-            <h5 class="center">What's coming next?</h5>
+            <h5 class="center">User Profile Analytics</h5>
 
-            <p class="white-text">Stay tuned...</p>
+            <p class="white-text">Statistics about your Basic Chat usage are available on a unique user profile! Take a look at the navigation bar once you've logged in.</p>
           </div>
         </div>
       </div>

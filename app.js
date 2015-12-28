@@ -1,3 +1,5 @@
+'use strict';
+
 var express = require("express");
 var app = express();
 var http = require("http").Server(app);
@@ -18,6 +20,7 @@ app.use(session({
 
 app.use(bodyParser.urlencoded({ extended: false })); 
 app.use(bodyParser.json());
+
 // set static directory
 app.use(express.static(__dirname + '/assets'));
 
@@ -25,7 +28,7 @@ var auth = function(req, res, next) {
   if (req.session && req.session.user) {
     return next();
   } else {
-  	return res.sendFile(__dirname + "/assets/views/login.html");
+  	return res.redirect('/');
   }
     
 };
@@ -35,7 +38,7 @@ var revAuth = function(req, res, next) {
   if (!req.session || !req.session.user)
     return next();
   else
-    return res.sendFile(__dirname + "/assets/views/chat.html");
+    return res.redirect('/');
 };
 
 
@@ -56,8 +59,10 @@ app.post('/login', function(req, res) {
 		if (succeeded) {
 			req.session.user = username;
 			currentUser = username;
-			console.log("User " + username + " has logged in.");
-			res.send(true);
+			mongoose.timeStamp("User " + username + " has logged in.");
+			mongoose.updateLogins(username, function() {
+				res.send(true);
+			});
 		} else {
 			res.send(false);
 		}
@@ -68,7 +73,7 @@ app.post('/login', function(req, res) {
 
 
 app.get('/logout', function(req, res) {
-	console.log("User " + req.session.user + " has logged out.");
+	mongoose.timeStamp("User " + req.session.user + " has logged out.");
 	currentUser = "";
 	req.session.destroy();
 	res.sendFile(__dirname + "/assets/views/index.html");
@@ -78,12 +83,12 @@ app.get('/chat', auth, function(req, res) {
 	res.sendFile(__dirname + "/assets/views/chat.html");
 });
 
-app.get('/register', function(req, res) {
-	res.sendFile(__dirname + "/assets/views/register.html");
+app.get('/profile', auth, function(req, res) { 
+	res.sendFile(__dirname + "/assets/views/profile.html");
 });
 
-app.get('/tictac', auth, function(req, res) {
-	res.sendFile(__dirname + "/assets/views/tictactoe.html");
+app.get('/register', revAuth, function(req, res) {
+	res.sendFile(__dirname + "/assets/views/register.html");
 });
 
 app.post('/register', function(req, res) {
@@ -95,7 +100,7 @@ app.post('/register', function(req, res) {
 				  };
 
 	mongoose.createUser(params);
-	res.redirect("/");
+	res.redirect("/login");
 	
 });
 
@@ -114,21 +119,22 @@ app.get('/api/user', function(req, res) {
 });
 
 app.get('/api/convos', function(req, res) {
-	mongoose.findUserConvos(req.session.user, function(convos) {
-		
+	mongoose.findUserConvos(req.session.user, function(convos) {		
 		res.json(convos);
 	});
 });
 
+
 var online = []
 
+
 io.on("connection", function(socket) {
-	
 	
 	socket.on("new message", function(msg) {
 		// check if convo exists between two users. create it if it doesnt exist
 		mongoose.findConvo(msg.username, msg.recipient, function(convo) {
 			if (!convo) {
+
 				var attribs = {"user_one": msg.username, "user_two": msg.recipient};
 				mongoose.createConvo(attribs, function(convo) {
 					mongoose.createMessage({"text": msg.message,
@@ -181,12 +187,13 @@ io.on("connection", function(socket) {
 });
 
 var delUser = function(socket, callback) {
+	debugger;
 	online.some(function(usr) {
 		if (usr.socket === socket) {
 				
 			online = online.filter(function(popped) {
 				// remove user from online list and pop from the list
-				console.log("User " + usr.username + " has left the chat.");
+				mongoose.timeStamp("User " + usr.username + " has left the chat.");
 				return popped.username != usr.username;
 			});
 		}
@@ -200,6 +207,7 @@ var delUser = function(socket, callback) {
 }
 
 var loadUser = function(user, socket, callback) {
+	//debugger;
 	mongoose.findUser(user.username, function(foundUser) {
 		mongoose.findUserConvos(foundUser.username, function(convos) {
 			var duplicate = online.some(function (usr) {
@@ -215,7 +223,7 @@ var loadUser = function(user, socket, callback) {
 				 "convo_ids": convos});
 			}
 				
-			console.log("User " + foundUser.username + " has joined the chat");
+			mongoose.timeStamp("User " + foundUser.username + " has joined the chat");
 
 			mongoose.findAllMessages(function(messages) {
 					
@@ -226,6 +234,8 @@ var loadUser = function(user, socket, callback) {
 		});
 	});
 }
+
+
 
 
 
