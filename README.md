@@ -20,6 +20,10 @@ Instant messaging system using Node.js and MongoDB
     
 **socket.io** -- Once npm is installed, use
     ```npm install socket.io```
+
+**bcrypt** -- Once npm is installed, use
+    ```npm install bcrypt```
+
     
 ## Installation
 =========================
