@@ -36,7 +36,7 @@ $(document).ready(function() {
         if (user.username) {
             currentUser = user;
             var firstname = currentUser.name.split(" ")[0];
-            $("#nav-mobile").append("<li><a href='#'>" + currentUser.username + "</a></li>");
+            $("#nav-mobile").append("<li><a href='/profile'>" + currentUser.username + "</a></li>");
             $("#loggable").remove();
             $("#titletag").html(firstname + "'s Basic Chat");
             // $(".contaminer").prepend('<div class="collection">' +

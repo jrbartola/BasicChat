@@ -1,3 +1,5 @@
+'use strict';
+
 var express = require("express");
 var app = express();
 var http = require("http").Server(app);
@@ -81,7 +83,11 @@ app.get('/chat', auth, function(req, res) {
 	res.sendFile(__dirname + "/assets/views/chat.html");
 });
 
-app.get('/register', function(req, res) {
+app.get('/profile', auth, function(req, res) { 
+	res.sendFile(__dirname + "/assets/views/profile.html");
+});
+
+app.get('/register', revAuth, function(req, res) {
 	res.sendFile(__dirname + "/assets/views/register.html");
 });
 
@@ -128,7 +134,7 @@ io.on("connection", function(socket) {
 		// check if convo exists between two users. create it if it doesnt exist
 		mongoose.findConvo(msg.username, msg.recipient, function(convo) {
 			if (!convo) {
-				console.log("No convo exists!?");
+
 				var attribs = {"user_one": msg.username, "user_two": msg.recipient};
 				mongoose.createConvo(attribs, function(convo) {
 					mongoose.createMessage({"text": msg.message,
@@ -181,6 +187,7 @@ io.on("connection", function(socket) {
 });
 
 var delUser = function(socket, callback) {
+	debugger;
 	online.some(function(usr) {
 		if (usr.socket === socket) {
 				
@@ -200,6 +207,7 @@ var delUser = function(socket, callback) {
 }
 
 var loadUser = function(user, socket, callback) {
+	//debugger;
 	mongoose.findUser(user.username, function(foundUser) {
 		mongoose.findUserConvos(foundUser.username, function(convos) {
 			var duplicate = online.some(function (usr) {

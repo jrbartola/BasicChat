@@ -1,3 +1,5 @@
+'use strict';
+
 var schemas = require('./schemas.js');
 var bcrypt = require('bcrypt');
 
@@ -77,7 +79,7 @@ var loginUser = function(username, password, callback) {
 		
   		if (err) console.error("ERROR: " + err.message);
   		if (user != null) {
-  			hashed = user["password"];
+  			var hashed = user["password"];
 
   			var goodLogin = bcrypt.compareSync(password, hashed);
   			if (goodLogin) {
