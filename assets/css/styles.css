@@ -1,11 +1,11 @@
    .conversation-wrap
     {
-        box-shadow: -2px 0 3px #ddd;
         padding:0;
-        height:510px;
+        height:610px;
         
-        overflow: auto;
+        overflow-y: scroll;
     }
+
     .conversation
     {
         padding:5px;
@@ -14,37 +14,26 @@
 
     }
 
-    .message-wrap
-    {
-        box-shadow: 0 0 3px #ddd;
-        padding:0;
-
+    .message-wrap {
+        border: 1px solid black; 
+        border-radius: 25px; 
+        box-shadow: 15px 15px 10px #888888;
     }
-    .msg
-    {
-        padding:5px;
-        /*border-bottom:1px solid #ddd;*/
-        margin:0;
-    }
+    
     .msg-wrap
     {
-        padding:10px;
-        height:414px;
-        overflow: auto;
+        height:500px;
+        overflow-y: scroll;
 
     }
 
     .time
     {
-        color:#bfbfbf;
+        color:#bfd502;
     }
 
-    .send-wrap
-    {
-        border-top: 1px solid #eee;
-        border-bottom: 1px solid #eee;
-        padding:10px;
-        /*background: #f8f8f8;*/
+    ul#tabs {
+        list-style-type: none;
     }
 
     .send-message
@@ -58,6 +47,11 @@
         border: 1px solid #e1e1e8;
     }
 
+    .media-object {
+        height: 32px;
+        width: 32px;
+    }
+
     .send-message-btn
     {
         border-top-left-radius: 0;
@@ -65,10 +59,6 @@
         border-bottom-left-radius: 0;
 
         border-bottom-right-radius: 0;
-    }
-    .btn-panel
-    {
-        background: #f7f7f9;
     }
 
     .btn-panel .btn
@@ -94,16 +84,6 @@
 
         background: #f8f8f8;
     }
-    .btn-panel-conversation .btn:first-child
-    {
-        border-right: 1px solid #ddd;
-    }
-
-    .msg-wrap .media-heading
-    {
-        color:#003bb3;
-        font-weight: 700;
-    }
 
 
     .msg-date
@@ -114,6 +94,46 @@
         border:none;
         box-shadow: none;
         border-bottom: 1px solid #ddd;
+    }
+
+    .card-panel {
+        text-align: center;
+    }
+
+    body { 
+        background-color:lightgray;
+    }
+
+    input#addedpic {
+        display: none;
+    }
+
+    div.tabContent.hide { 
+        display: none;
+    }
+
+    .labels {
+        font-family: Courier-Bold;
+    }
+
+    .data {
+        width: 100%; 
+        border: 10px groove #b71c1c; 
+        padding: 10px;
+    };
+    
+    
+    
+    .hoverable { 
+        border-radius:15px;
+    }
+
+    div.parallax-container { 
+        height:450px;
+    }
+    
+    .swag {
+        transform: scale(2,2);
     }
 
 
@@ -130,14 +150,14 @@
     /* Track */
     ::-webkit-scrollbar-track {
         -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
-/*        -webkit-border-radius: 10px;
-        border-radius: 10px;*/
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
     }
 
     /* Handle */
     ::-webkit-scrollbar-thumb {
-/*        -webkit-border-radius: 10px;
-        border-radius: 10px;*/
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
         background:#ddd; 
         -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
     }
