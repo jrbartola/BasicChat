@@ -25,6 +25,9 @@
 
 <script>
 $(document).ready(function() {
+	// initialize the navbar
+	$(".button-collapse").sideNav();
+
     chatsocket = io();
     
     $("#logout").on("click", function() {
@@ -102,7 +105,7 @@ var ChatApp = React.createClass({
 		this.getJSONInfo();
 
 		chatsocket.on("refresh", function(data) {
-			console.log("refreshing...");
+			console.log("Refreshing...");
 			that.setState({convos: data});
 			
 		});
@@ -112,9 +115,6 @@ var ChatApp = React.createClass({
 			that.setState({convos: data.convos});
     		that.setState({messages: data.messages});
 			
-    		
-    		//console.log(that.state.convos);
-    		
   		});
 
 		chatsocket.on("new message", function(data) {
@@ -122,7 +122,6 @@ var ChatApp = React.createClass({
 				that.setState({messages: data});
 				scrollToBottom();
 			
-				//console.log("messages length is " + data.length);
 				console.log("message state updated!");
 			});
 			
@@ -145,19 +144,19 @@ var ChatApp = React.createClass({
 		return (
 	<div id="MsgContainer">
 		<br/>
-    	<div className="row">
-        	<div className="col s4">
+      <div className="row">
+        	<div className="col s6 m4">
             	
                 <h6 id="lastlogin" className="left">Last login: null</h6>
         	</div>
 
-        <div className="col s8">
+        <div className="col s6 m8">
             <div className="btn-panel btn-panel-msg">
 
                 <a href="#" style={btnWidth} className="btn col s3 grey lighten-5 red-text text-darken-4 right" role="button"><i className="fa fa-gears"></i> Settings</a>
             </div>
         </div>
-    </div>
+      </div>
 		<div className="row">
 			
 			<Conversations messages={this.state.messages} convos={this.state.convos}/>
@@ -196,7 +195,7 @@ var Conversations = React.createClass({
 
 
 		return (
-		<div className="conversation-wrap col s4">
+		<div className="conversation-wrap col s12 m4">
 			<div className="card-panel grey lighten-5 red-text text-darken-4">
                     <strong>Conversations</strong>
             </div>
@@ -278,7 +277,7 @@ var Messages = React.createClass({
 		
 
 		return (
-		<div className="message-wrap col s8">
+		<div className="message-wrap col s12 m8">
 			{msgTabs}
 			<div className="divider"></div>
 			<form id="messagebox" onChange={this.props.onChange} enctype="multipart/form-data">
@@ -287,15 +286,14 @@ var Messages = React.createClass({
             	</div>
             	<div className="btn-panel">
                 	<input type="hidden" form="messagebox" id="hiddenrecip" value="" name="recipient" />
-                	<button type="button" className="btn grey lighten-5 red-text text-darken-4"
-                   onClick={this.addFile} ><i className="fa fa-upload"></i> Add Picture</button>
+                	<button type="button" id="fileup" className="btn grey lighten-5 red-text text-darken-4 col s4"
+                   onClick={this.addFile} ><i className="fa fa-upload"></i> Add Media</button>
                 
                 	<input type="file" form="messagebox" onChange={this.displayFile} name="advisorpic" id="addedpic" accept="image/*" />
-                	<button type="button" onClick={this.props.sendMessage} id="submitform" className="col s3 btn right grey lighten-5 red-text text-darken-4"
+                	<button type="button" onClick={this.props.sendMessage} id="submitform" className="col s4 btn right grey lighten-5 red-text text-darken-4"
                    ><i className="fa fa-comment"></i> Send</button>
             	</div>
 				<label className="col s2" id="uploadedfile"></label>
-				<label className="col s2 right" id="charcount"></label>
         	</form>
 		</div>
 		)
@@ -357,7 +355,7 @@ var Msg = React.createClass({
 	render: function() {
 
 		var mediaMsg;
-		//console.log(currentUser.username + " ====?? to " + this.props.user);
+		
 		if (currentUser.username === this.props.user) {
 			mediaMsg = "/img/messageicon.png";
 		} else {
@@ -395,17 +393,23 @@ React.render(
 </audio>
 <body>
 <nav class="red darken-4">
-  <div class="nav-wrapper">
-    <a href="#" class="brand-logo center">Basic Chat</a>
-    <ul id="nav-mobile" class="left hide-on-small-and-down">
-      <li><a href="/"><i class="material-icons left">store</i>Home</a></li>
-      <li><a href="/chat">Chat</a></li>
-      <li><a id="profile" href="/profile">Profile</a></li>
-      </ul>
-    <ul class="right hide-on-small-and-down">
-      <li><a id="logout" href="/logout">Log out</a></li>
-    </ul>
-  </div>
+    <div class="nav-wrapper">
+        <a href="/" class="brand-logo center">Basic Chat</a>
+        <a href="#" data-activates="nav-mobile" class="button-collapse hide-on-med-and-up"><i class="material-icons">menu</i></a>
+        <ul class="left hide-on-small-and-down">
+            <li><a href="/"><i class="material-icons left">store</i>Home</a></li>
+            <li><a href="/chat">Chat</a></li>
+            <li><a id="prof" href="/profile">Profile</a></li>
+        </ul>
+        <ul id="nav-mobile" class="side-nav">
+            <li><a href="/chat">Chat</a></li>
+            <li><a id="prof" href="/profile">Profile</a></li>
+            <li><a id="logout" href="/logout">Log out</a></li>
+        </ul>
+        <ul class="right hide-on-small-and-down">
+            <li><a id="logout" href="/logout">Log out</a></li>
+        </ul>
+    </div>
 </nav>
 
 <div class="container">

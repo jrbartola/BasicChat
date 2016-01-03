@@ -2,6 +2,7 @@
 
 var schemas = require('./schemas.js');
 var bcrypt = require('bcrypt');
+var colors = require('colors');
 
 
 var createUser = function(attributes) {

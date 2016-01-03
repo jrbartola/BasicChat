@@ -24,6 +24,8 @@
 <script>
 
 $(document).ready(function() {
+    // initialize the navbar
+    $(".button-collapse").sideNav();
 
     var currentUser;
 
@@ -46,17 +48,23 @@ $(document).ready(function() {
 <body>
 <nav class="red darken-4">
     <div class="nav-wrapper">
-        <a href="#" class="brand-logo center">Basic Chat</a>
-        <ul id="nav-mobile" class="left hide-on-small-and-down">
+        <a href="/" class="brand-logo center">Basic Chat</a>
+        <a href="#" data-activates="nav-mobile" class="button-collapse hide-on-med-and-up"><i class="material-icons">menu</i></a>
+        <ul class="left hide-on-small-and-down">
             <li><a href="/"><i class="material-icons left">store</i>Home</a></li>
             <li><a href="/chat">Chat</a></li>
             <li><a id="prof" href="/profile">Profile</a></li>
+        </ul>
+        <ul id="nav-mobile" class="side-nav">
+            <li><a href="/chat">Chat</a></li>
+            <li><a id="prof" href="/profile">Profile</a></li>
+            <li><a id="logout" href="/logout">Log out</a></li>
         </ul>
         <ul class="right hide-on-small-and-down">
             <li><a id="logout" href="/logout">Log out</a></li>
         </ul>
     </div>
-  </nav>
+</nav>
 
     <div class="contain">
     <div id="central" class="col s4">

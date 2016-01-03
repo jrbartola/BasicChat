@@ -27,6 +27,22 @@
 
     }
 
+    /* File upload button in chat view */
+    #fileup {
+        margin-left: 10px;
+        margin-bottom: 10px;
+        font-size: 3vmin;
+        overflow: hidden;
+    }
+
+    /* Send message button in chat view */
+    #submitform {
+        margin-right: 10px;
+        margin-bottom: 10px;
+        font-size: 3vmin;
+        overflow: hidden;
+    }
+
     .time
     {
         color:#bfd502;
@@ -47,6 +63,37 @@
         border: 1px solid #e1e1e8;
     }
 
+    .regi {
+        /*max-width: 70%;*/
+        padding-left: 50%;
+        padding-right: 50%;
+    }
+
+    /* Registration Title Box */
+    .regi div {
+        overflow: hidden;
+    }
+
+    #nav-mobile {
+        background-color: lightgrey;
+    }
+
+    #nav-mobile li:hover {
+        background-color: #b71c1c;
+    }
+
+    #nav-mobile li:hover a {
+        color: white;
+    }
+
+    /*h2 {
+        font-size: 7vmin;
+    }*/
+
+    input:active {
+        background-color:red;
+    }
+
     .media-object {
         height: 32px;
         width: 32px;
@@ -57,7 +104,6 @@
         border-top-left-radius: 0;
         border-top-right-radius: 0;
         border-bottom-left-radius: 0;
-
         border-bottom-right-radius: 0;
     }
 
@@ -132,7 +178,7 @@
         height:450px;
     }
     
-    .swag {
+    .swag { /* represents tic tac toe? */
         transform: scale(2,2);
     }
 
