@@ -27,9 +27,20 @@ Instant messaging system using Node.js and MongoDB
     
 ## Installation
 =========================
-**TO INSTALL:** use 
-    ```npm install git+https://jrbartola@github.com/BasicChat.git```
-    
+
 Once installed, navigate to directory where app.js is located and type
     ```node app.js```
 into the console
+
+## Features
+-------------------------
+
+*Media messaging is not yet implemented*
+
+* **User can log in and chat with anybody else that is logged into the chat room**
+
+* **User can view statistics about their usage on their profile page**
+
+* **Socket.io ensures that all messaging is instantaneous**
+
+* **MongoDB provides adjustable schemas for scalable applications; integrates well with Javascript**
