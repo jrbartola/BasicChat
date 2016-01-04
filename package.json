@@ -1,13 +1,13 @@
 {
   "name": "chat-box",
   "version": "1.0.0",
-  "description": "BasicChat",
+  "description": "Real-time small-scaled chat socket based interface",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Jesse",
-  "license": "ISC",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/jrbartola/BasicChat.git"
