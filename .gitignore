@@ -6,3 +6,6 @@
 
 # Ignore old file copy
 /assets/views/chat_old.html
+
+# Useless gulp file
+gulpfile.js
