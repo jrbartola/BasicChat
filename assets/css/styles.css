@@ -62,6 +62,10 @@ div.parallax-container {
     height:450px;
 }
 
+.scale-icon {
+    transform: scale(2,2);
+}
+
 /* ----------Registration Style----------- */
 
 .regi {
@@ -159,10 +163,8 @@ div.tabContent.hide {
 
 
 
-/* Tic Tac Toe Boxes, Depricated
-.swag {
-    transform: scale(2,2);
-}
-*/
+ Tic Tac Toe Boxes, Depricated
+
+
 
 
