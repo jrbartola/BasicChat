@@ -124,7 +124,7 @@ app.get('/api/convos', function(req, res) {
 	});
 });
 
-
+// keep a list of users in the chat room
 var online = []
 
 
@@ -142,7 +142,7 @@ io.on("connection", function(socket) {
 
 						mongoose.findAllMessages(function(messages) {
 							var recipient = {username: msg.recipient};
-							recipi = online.filter(function(otherusr) {
+							var recipi = online.filter(function(otherusr) {
 								return otherusr.username === recipient.username;
 							});
 							
@@ -221,10 +221,10 @@ var loadUser = function(user, socket, callback) {
 				 "time": new Date(),
 				 "user_id": foundUser._id,
 				 "convo_ids": convos});
+
+				mongoose.timeStamp("User " + foundUser.username + " has joined the chat");
 			}
 				
-			mongoose.timeStamp("User " + foundUser.username + " has joined the chat");
-
 			mongoose.findAllMessages(function(messages) {
 					
 				io.emit('new User', {"convos": online, "messages": messages});

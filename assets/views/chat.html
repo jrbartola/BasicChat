@@ -89,9 +89,10 @@ var ChatApp = React.createClass({
         		currentUser = user;
         		$.getJSON("/api/convos", function(convos) {
         			currentUser.convos = convos;
-        			$("#profile").html(user.username);
+        			$("#prof").html(user.username);
             		$("#lastlogin").html("Last login: " + generateDate(user.updated_at));
             		chatsocket.emit("loadUser", user);
+            		//console.log(currentUser);
             		if (callback) return callback();
         		});
             	
@@ -131,9 +132,11 @@ var ChatApp = React.createClass({
 	sendMessage: function() {
 		if ($(".selected").length != 0) {
 			chatsocket.emit("new message", {"message": $('#msgbox').val(), 
-                        "username" : $("#profile").html(),
+                        "username" : $("#prof").html(),
                         "recipient": $(".selected").attr("name")});
 			$("#msgbox").val("");
+		} else if ($("textarea").val() == "") {
+			// do nothing
 		} else {
 			Materialize.toast("You need a user to send a message to!", 4000);
 		}
@@ -216,13 +219,24 @@ var ConvoRow = React.createClass({
 	// methods: convoClicked
 
 	render: function() {
+		var that = this;
+
+		var imgSrc = "/img/messageicon_silver.png";
+		var hasConvo = currentUser.convos.some(function(convo) {
+			return convo.user_one.username === that.props.otheruser ||
+				convo.user_two.username === that.props.otheruser;
+		});
+
+		if (hasConvo)
+			imgSrc = "/img/messageicon.png";
+
 		return (
 		<li className="hoverable" onClick={this.convoClicked}>
 			<a href={"#" + this.props.otheruser} name={this.props.otheruser}>
 				<div className="media conversation" name={this.props.otheruser}>
 					<div className="row">
 						<div className="pull-left col s4">
-						<img className="media-object" data-src="/img/messageicon_silver.png" alt="msgico" src="/img/messageicon_silver.png" />
+						<img className="media-object" alt="msgico" src={imgSrc} />
 						</div>
 						<div className="media-body col s8">
 						<h6 className="media-heading red-text text-darken-4">{this.props.otheruser}</h6>

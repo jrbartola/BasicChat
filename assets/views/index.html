@@ -39,6 +39,7 @@ $(document).ready(function() {
             $("#nav-mobile").children()[1].remove();
             // append profile and logout buttons to navbar if user logged in
             $("#nav-mobile").append("<li><a href='/profile'>" + currentUser.username + "</a></li>");
+            $("#fullnav").append("<li><a href='/profile'>" + currentUser.username + "</a></li>");
             $("#nav-mobile").append("<li><a id='logout-m' href='/logout'>Log out</a></li>")
             $("#loggable").remove();
             $("#titletag").html(firstname + "'s Basic Chat");
@@ -56,7 +57,7 @@ $(document).ready(function() {
     <div class="nav-wrapper">
         <a href="/" class="brand-logo center">Basic Chat</a>
         <a href="#" data-activates="nav-mobile" class="button-collapse hide-on-med-and-up"><i class="material-icons">menu</i></a>
-        <ul class="left hide-on-small-and-down">
+        <ul id="fullnav" class="left hide-on-small-and-down">
             <li><a href="/"><i class="material-icons left">store</i>Home</a></li>
             <li><a href="/chat">Chat</a></li>
             <!-- <li><a id="prof" href="/profile">Profile</a></li> -->

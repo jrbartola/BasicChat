@@ -1,212 +1,168 @@
-   .conversation-wrap
-    {
-        padding:0;
-        height:610px;
-        
-        overflow-y: scroll;
-    }
+/* -----Universal Classes | Universal Types----- */
 
-    .conversation
-    {
-        padding:5px;
-        border-bottom:1px solid #ddd;
-        margin:0;
+body {
+    background-color:lightgray;
+}
 
-    }
 
-    .message-wrap {
-        border: 1px solid black; 
-        border-radius: 25px; 
-        box-shadow: 15px 15px 10px #888888;
-    }
+
+body::-webkit-scrollbar {
+    width: 14px;
+}
+
+.card-panel {
+    text-align: center;
+}
+
+.hoverable { 
+    border-radius:15px;
+}
+
+/* Webkit Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: darkgrey; 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
     
-    .msg-wrap
-    {
-        height:500px;
-        overflow-y: scroll;
+::-webkit-scrollbar-thumb:window-inactive {
+    background: darkgrey; 
+}
 
-    }
+/* ----------Universal IDs---------- */
 
-    /* File upload button in chat view */
-    #fileup {
-        margin-left: 10px;
-        margin-bottom: 10px;
-        font-size: 3vmin;
-        overflow: hidden;
-    }
+#nav-mobile {
+    background-color: lightgrey;
+}
 
-    /* Send message button in chat view */
-    #submitform {
-        margin-right: 10px;
-        margin-bottom: 10px;
-        font-size: 3vmin;
-        overflow: hidden;
-    }
+#nav-mobile li:hover {
+    background-color: #b71c1c;
+}
 
-    .time
-    {
-        color:#bfd502;
-    }
+#nav-mobile li:hover a {
+    color: white;
+}
 
-    ul#tabs {
-        list-style-type: none;
-    }
+/* ----------Index Style---------- */
 
-    .send-message
-    {
-        resize: none;
-    }
+div.parallax-container { 
+    height:450px;
+}
 
-    .highlight
-    {
-        background-color: #f7f7f9;
-        border: 1px solid #e1e1e8;
-    }
+/* ----------Registration Style----------- */
 
-    .regi {
-        /*max-width: 70%;*/
-        padding-left: 50%;
-        padding-right: 50%;
-    }
+.regi {
+    /*max-width: 70%;*/
+    padding-left: 50%;
+    padding-right: 50%;
+}
 
-    /* Registration Title Box */
-    .regi div {
-        overflow: hidden;
-    }
+/* Registration Title Box */
+.regi div {
+    overflow: hidden;
+}
 
-    #nav-mobile {
-        background-color: lightgrey;
-    }
+/* ----------Chat Styles---------- */
 
-    #nav-mobile li:hover {
-        background-color: #b71c1c;
-    }
+.conversation-wrap {
+    padding:0;
+    height:610px;
+    overflow-y: scroll;
+}
 
-    #nav-mobile li:hover a {
-        color: white;
-    }
+.conversation {
+    padding:5px;
+    border-bottom:1px solid #ddd;
+    margin:0;
+}
 
-    /*h2 {
-        font-size: 7vmin;
-    }*/
-
-    input:active {
-        background-color:red;
-    }
-
-    .media-object {
-        height: 32px;
-        width: 32px;
-    }
-
-    .send-message-btn
-    {
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
-    }
-
-    .btn-panel .btn
-    {
-        color:#b8b8b8;
-
-        transition: 0.2s all ease-in-out;
-    }
-
-    .btn-panel .btn:hover
-    {
-        color:#666;
-        background: #f8f8f8;
-    }
-    .btn-panel .btn:active
-    {
-        background: #f8f8f8;
-        box-shadow: 0 0 1px #ddd;
-    }
-
-    .btn-panel-conversation .btn,.btn-panel-msg .btn
-    {
-
-        background: #f8f8f8;
-    }
-
-
-    .msg-date
-    {
-        background: none;
-        text-align: center;
-        color:#aaa;
-        border:none;
-        box-shadow: none;
-        border-bottom: 1px solid #ddd;
-    }
-
-    .card-panel {
-        text-align: center;
-    }
-
-    body { 
-        background-color:lightgray;
-    }
-
-    input#addedpic {
-        display: none;
-    }
-
-    div.tabContent.hide { 
-        display: none;
-    }
-
-    .labels {
-        font-family: Courier-Bold;
-    }
-
-    .data {
-        width: 100%; 
-        border: 10px groove #b71c1c; 
-        padding: 10px;
-    };
+.message-wrap {
+    border: 1px solid black; 
+    border-radius: 25px; 
+    box-shadow: 15px 15px 10px #888888;
+}
     
-    
-    
-    .hoverable { 
-        border-radius:15px;
-    }
+.msg-wrap {
+    height:500px;
+    overflow-y: scroll;
+}
 
-    div.parallax-container { 
-        height:450px;
-    }
-    
-    .swag { /* represents tic tac toe? */
-        transform: scale(2,2);
-    }
+/* File upload button in chat view */
+#fileup {
+    margin-left: 10px;
+    margin-bottom: 10px;
+    font-size: 3vmin;
+    overflow: hidden;
+}
+
+/* Send message button in chat view */
+#submitform {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    font-size: 3vmin;
+    overflow: hidden;
+}
+
+.time {
+    color: dimgray;
+    padding-right: 10px;
+}
+
+/* Conversation Tabs */
+ul#tabs {
+    list-style-type: none;
+}
+
+/* Textarea for messaging */
+.send-message {
+    resize: none;
+}
+
+/* Chat bubble pictures next to each message */
+.media-object {
+    height: 32px;
+    width: 32px;
+}
+
+input#addedpic {
+    display: none;
+}
+
+div.tabContent.hide { 
+    display: none;
+}
+
+/* ----------Profile Page---------- */
+
+.labels {
+    font-family: Courier-Bold;
+}
+
+.data {
+    width: 100%; 
+    border: 10px groove #b71c1c; 
+    padding: 10px;
+}
 
 
-    body::-webkit-scrollbar {
-        width: 12px;
-    }
- 
-    
-    /* Let's get this party started */
-    ::-webkit-scrollbar {
-        width: 6px;
-    }
 
-    /* Track */
-    ::-webkit-scrollbar-track {
-        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
-        -webkit-border-radius: 10px;
-        border-radius: 10px;
-    }
+/* Tic Tac Toe Boxes, Depricated
+.swag {
+    transform: scale(2,2);
+}
+*/
 
-    /* Handle */
-    ::-webkit-scrollbar-thumb {
-        -webkit-border-radius: 10px;
-        border-radius: 10px;
-        background:#ddd; 
-        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
-    }
-    ::-webkit-scrollbar-thumb:window-inactive {
-        background: #ddd; 
-    }
+

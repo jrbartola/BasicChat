@@ -15,8 +15,8 @@ var createUser = function(attributes) {
 
 	var newUser = new schemas.User(attributes);
 
-	newUser.save(function(error) {
-		if (error) throw error;
+	newUser.save(function(err) {
+		if (err) timeStamp(err, true);
 		timeStamp("User " + attributes.name + " registered!");
 	});
 }
@@ -33,19 +33,19 @@ var createConvo = function(attributes, callback) {
 
 					var newConvo = new schemas.Convo(attributes);
 
-					newConvo.save(function(error) {
-						if (error) console.dir(error);
+					newConvo.save(function(err) {
+						if (err) timeStamp(err, true);
 						timeStamp("Conversation created between " + user_one.username + 
 							" and " + user_two.username);
 						return callback(newConvo);
 		
 					});
 				} else {
-					timeStamp("No user_two found for " + attributes.user_two + ".");
+					timeStamp("No user_two found for " + attributes.user_two + ".", true);
 				} // write else clauses later // create user for user_two
 			});
 		}  else {
-			timeStamp("No user_one found for " + attributes.user_one + ".");
+			timeStamp("No user_one found for " + attributes.user_one + ".", true);
 		}// write else clauses later // create user for user_one
 	})
 	
@@ -62,13 +62,13 @@ var createMessage = function(attributes, callback) {
 			user_fk.msgs_sent = user_fk.msgs_sent + 1;
 			user_fk.save();
 
-			newMessage.save(function(error) {
-				if (error) console.dir(error);
+			newMessage.save(function(err) {
+				if (err) timeStamp(err, true);
 				
 				return callback();
 			});
 		} else {
-			timeStamp("No user found from attributes.");
+			timeStamp("No user found from attributes.", null);
 		}
 	});
 
@@ -90,7 +90,7 @@ var loginUser = function(username, password, callback) {
   			
   		}
 
-  		timeStamp('Unsuccessful login attempt for user ' + username);
+  		timeStamp('Unsuccessful login attempt for user ' + username, null);
   		return callback(false);
 
 	});
@@ -100,7 +100,7 @@ var loginUser = function(username, password, callback) {
 
 var findUser = function(username, callback) {
 	schemas.User.findOne({'username': username }, function (err, user) {
-  		if (err) throw err;
+  		if (err) timeStamp(err, true);
   		if (user != null) {
   			
   			return callback(user);
@@ -123,7 +123,7 @@ var findConvo = function(user_one, user_two, callback) {
 			 {"user_one": usertwo._id, "user_two": userone._id}]);
 
 			query.exec(function(err, convo) {
-				if (err) console.dir(err);
+				if (err) timeStamp(err, true);
 				return callback(convo);
 			});
 		});
@@ -143,7 +143,7 @@ var findUserConvos = function(username, callback) {
 		query.populate("user_one");
 		query.populate("user_two");
 		query.exec(function(err, convos) {
-			if (err) console.dir(err);
+			if (err) timeStamp(err, true);
 			return callback(convos);
 		});
 	});
@@ -159,7 +159,7 @@ var findMessages = function(user, callback) {
 		var query = schemas.Message.find({"user_fk": founduser._id});
 		query.populate('user_fk');
 		query.exec(function(err, messages) {
-			if (err) console.error("ERROR: " + err.message);
+			if (err) timeStamp(err, true);
 
 			return callback(messages);
 		});
@@ -171,7 +171,7 @@ var findAllMessages = function(callback) {
 		query.populate('user_fk');
 		query.sort({time: "asc"});
 		query.exec(function(err, messages) {
-			if (err) console.error("ERROR: " + err.message);
+			if (err) timeStamp(err, true);
 			
 			return callback(messages);
 		});
@@ -179,7 +179,7 @@ var findAllMessages = function(callback) {
 
 var updateLogins = function(username, callback) {
 	schemas.User.findOne({username: username}, function(err, user) {
-		if (err) console.error("ERROR: " + err.message);
+		if (err) timeStamp(err, true);
 
 		user.logins = user.logins + 1;
 		user.save();
@@ -187,7 +187,7 @@ var updateLogins = function(username, callback) {
 	});
 }
 
-var timeStamp = function(string) {
+var timeStamp = function(string, error) {
 	Number.prototype.padLeft = function(base,chr){
    		var  len = (String(base || 10).length - String(this).length)+1;
    		return len > 0? new Array(len).join(chr || '0')+this : this;
@@ -201,7 +201,14 @@ var timeStamp = function(string) {
                   [ d.getHours().padLeft(),
                     d.getMinutes().padLeft(),
                     d.getSeconds().padLeft()].join(':');
-    console.log("[" + dformat + "]  " + string);
+    // format string; red where error is true, yellow
+    // when error is null, default when error is omitted or false
+    if (error)
+    	console.log("[" + dformat + "]  " + string .red);
+    else if (error === null)
+    	console.log("[" + dformat + "]  " + string .yellow);
+    else
+    	console.log("[" + dformat + "]  " + string);
 }
 
 
