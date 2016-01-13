@@ -5,7 +5,7 @@ var bcrypt = require('bcrypt');
 var colors = require('colors');
 
 
-var createUser = function(attributes) {
+function createUser(attributes) {
 	var pass = attributes.password;
 	var hash = bcrypt.hashSync(pass, 10);
 	attributes.password = hash;
@@ -21,7 +21,7 @@ var createUser = function(attributes) {
 	});
 }
 
-var createConvo = function(attributes, callback) {
+function createConvo(attributes, callback) {
 	attributes.time = new Date();
 	findUser(attributes.user_one, function(user_one) {
 		if (user_one) {
@@ -51,7 +51,7 @@ var createConvo = function(attributes, callback) {
 	
 }
 
-var createMessage = function(attributes, callback) {
+function createMessage(attributes, callback) {
 	attributes.time = new Date();
 	
 	findUser(attributes.user_fk, function(user_fk) {
@@ -75,7 +75,7 @@ var createMessage = function(attributes, callback) {
 	
 }
 
-var loginUser = function(username, password, callback) {
+function loginUser(username, password, callback) {
 	schemas.User.findOne({'username': username }, function (err, user) {
 		
   		if (err) console.error("ERROR: " + err.message);
@@ -98,7 +98,7 @@ var loginUser = function(username, password, callback) {
 
 }
 
-var findUser = function(username, callback) {
+function findUser(username, callback) {
 	schemas.User.findOne({'username': username }, function (err, user) {
   		if (err) timeStamp(err, true);
   		if (user != null) {
@@ -109,7 +109,7 @@ var findUser = function(username, callback) {
 	});
 }
 
-var findConvo = function(user_one, user_two, callback) {
+function findConvo(user_one, user_two, callback) {
 	findUser(user_one, function(userone) {
 		if (userone == null) {
 			return callback(null);
@@ -132,7 +132,7 @@ var findConvo = function(user_one, user_two, callback) {
 	
 }
 
-var findUserConvos = function(username, callback) {
+function findUserConvos(username, callback) {
 	findUser(username, function(usr) {
 		if (usr == null) {
 			return callback(null);
@@ -150,7 +150,7 @@ var findUserConvos = function(username, callback) {
 	
 }
 
-var findMessages = function(user, callback) {
+function findMessages(user, callback) {
 	findUser(user, function(founduser) {
 		if (founduser == null) {
 			return callback([]);
@@ -166,7 +166,7 @@ var findMessages = function(user, callback) {
 	});
 }
 
-var findAllMessages = function(callback) {
+function findAllMessages(callback) {
 	var query = schemas.Message.find({});
 		query.populate('user_fk');
 		query.sort({time: "asc"});
@@ -177,7 +177,7 @@ var findAllMessages = function(callback) {
 		});
 }
 
-var updateLogins = function(username, callback) {
+function updateLogins(username, callback) {
 	schemas.User.findOne({username: username}, function(err, user) {
 		if (err) timeStamp(err, true);
 
@@ -187,7 +187,7 @@ var updateLogins = function(username, callback) {
 	});
 }
 
-var timeStamp = function(string, error) {
+function timeStamp(string, error) {
 	Number.prototype.padLeft = function(base,chr){
    		var  len = (String(base || 10).length - String(this).length)+1;
    		return len > 0? new Array(len).join(chr || '0')+this : this;

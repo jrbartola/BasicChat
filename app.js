@@ -186,7 +186,7 @@ io.on("connection", function(socket) {
 	});
 });
 
-var delUser = function(socket, callback) {
+function delUser(socket, callback) {
 	debugger;
 	online.some(function(usr) {
 		if (usr.socket === socket) {
@@ -206,7 +206,7 @@ var delUser = function(socket, callback) {
 	}
 }
 
-var loadUser = function(user, socket, callback) {
+function loadUser(user, socket, callback) {
 	//debugger;
 	mongoose.findUser(user.username, function(foundUser) {
 		mongoose.findUserConvos(foundUser.username, function(convos) {
