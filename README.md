@@ -2,7 +2,7 @@
 Instant messaging system using Node.js and MongoDB
 
 ##Requirements
-========================
+-------------------------
 **node.js and npm** -- Check out https://nodejs.org/en/
 
 **MongoDB** -- Check out https://www.mongodb.com/
@@ -26,11 +26,11 @@ Instant messaging system using Node.js and MongoDB
 
     
 ## Installation
-=========================
+-------------------------
 
-Once installed, navigate to directory where app.js is located and type
+Once installed, navigate to directory where app.js is located and run
     ```node app.js```
-into the console
+from your teminal of choice
 
 ## Features
 -------------------------
